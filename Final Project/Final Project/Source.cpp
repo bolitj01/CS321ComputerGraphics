@@ -39,6 +39,7 @@ void display(void) {
 	glTranslatef(xMove, yMove, zMove);
 	drawFileB();
 	drawFileG();
+	drawFileS();
 
 	glFlush();
 }
@@ -53,6 +54,11 @@ void setup() {
 	fp = fopen("soccergoal.obj", "r");
 	countLines();
 	createArrayG();
+	currObj = 2;
+
+	fp = fopen("stadium2.obj", "r");
+	countLines();
+	createArrayS();
 }
 
 void main(int argc, char** argv)

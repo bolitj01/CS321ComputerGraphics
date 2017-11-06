@@ -31,6 +31,9 @@ void countLines() {
 			else if (currObj == 1) {
 				numOfFG++;
 			}
+			else if (currObj == 2) {
+				numOfFS++;
+			}
 		}
 		res = fscanf(fp, "%s", lineHeader);
 	}
@@ -96,6 +99,36 @@ void createArrayB() {
 	}
 }
 
+void createArrayS() {
+	rewind(fp);
+	int countv = 0;
+	int countvn = 0;
+	int countf = 0;
+	int test;
+	char lineHeader[128];
+	verticeArrS = (double *)calloc(numOfV * 3, sizeof(double));
+	normVecArrS = (double *)calloc(numOfVN * 3, sizeof(double));
+	faceArrS = (int *)calloc(numOfFS * 9, sizeof(int));
+	// read the first word of the line
+	int res = fscanf(fp, "%s", lineHeader);
+	while (res != EOF) {
+		if (strcmp(lineHeader, "v") == 0) {
+			fscanf(fp, "%lf %lf %lf\n", &verticeArrS[countv], &verticeArrS[countv + 1], &verticeArrS[countv + 2]);
+			countv += 3;
+		}
+		else if (strcmp(lineHeader, "vn") == 0) {
+			fscanf(fp, "%lf %lf %lf\n", &normVecArrS[countvn], &normVecArrS[countvn + 1], &normVecArrS[countvn + 2]);
+			countvn += 3;
+		}
+		else if (strcmp(lineHeader, "f") == 0) {
+			fscanf(fp, "%d/%d/d %d/%d/%d %d/%d/%d", &faceArrS[countf], &faceArrS[countf + 1], &faceArrS[countf + 2], &faceArrS[countf + 3], &faceArrS[countf + 4], &faceArrG[countf + 5], &faceArrS[countf + 6], &faceArrS[countf + 7], &faceArrG[countf + 8]);
+			/*fscanf(fp, " %d %d %d ", &faceArr[countf], &faceArr[countf + 1], &faceArr[countf + 2]);
+			countf += 3;*/
+			countf += 9;
+		}
+		res = fscanf(fp, "%s", lineHeader);
+	}
+}
 
 void drawFileG() {
 	int i = 0;
@@ -152,6 +185,34 @@ void drawFileB() {
 	}
 	glEnd();
 
+}
+
+void drawFileS() {
+	int i = 0;
+	int vertexNum = 0;
+	glBegin(GL_TRIANGLES);
+	for (i = 0; i < numOfFS; i++) {
+		glColor3f(.4, .4, .3);
+		vertexNum = faceArrS[i * 9];//First vertex
+		vertice[0] = verticeArrS[(vertexNum * 3) - 3];
+		vertice[1] = verticeArrS[(vertexNum * 3) - 2];
+		vertice[2] = verticeArrS[(vertexNum * 3) - 1];
+		vertice[3] = 1;
+		glVertex3f(vertice[0], vertice[1], vertice[2]);
+		vertexNum = faceArrS[i * 9 + 3];//Second vertex
+		vertice[0] = verticeArrS[(vertexNum * 3) - 3];
+		vertice[1] = verticeArrS[(vertexNum * 3) - 2];
+		vertice[2] = verticeArrS[(vertexNum * 3) - 1];
+		vertice[3] = 1;
+		glVertex3f(vertice[0], vertice[1], vertice[2]);
+		vertexNum = faceArrS[i * 9 + 6];//Third vertex
+		vertice[0] = verticeArrS[(vertexNum * 3) - 3];
+		vertice[1] = verticeArrS[(vertexNum * 3) - 2];
+		vertice[2] = verticeArrS[(vertexNum * 3) - 1];
+		vertice[3] = 1;
+		glVertex3f(vertice[0], vertice[1], vertice[2]);
+	}
+	glEnd();
 }
 
 

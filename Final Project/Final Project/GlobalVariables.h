@@ -12,6 +12,7 @@ int numOfV; //Number of vertices in file
 int numOfVN;//Number of normal vectors in the file
 int numOfFG;//Number of faces in goal file
 int numOfFB;//Number of faces in ball file
+int numOfFS;//Number of faces in stadium file
 int * arrayPtr; //Pointer to dynamically allotted array
 double *vertice = (double *)calloc(4, sizeof(double));//Holds current x, y, z, and w values to be drawn
 int xRot = 15;//Holds number of degrees to rotate around x axis
@@ -29,6 +30,9 @@ int *faceArrG;
 double *verticeArrB;
 double *normVecArrB;
 int *faceArrB;
+double *verticeArrS;
+double *normVecArrS;
+int *faceArrS;
 int currObj = 0; //Object file being read, 0 = ball, 1 = goal
 
 
