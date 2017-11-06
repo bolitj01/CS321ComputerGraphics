@@ -39,7 +39,7 @@ void display(void) {
 	glTranslatef(xMove, yMove, zMove);
 	drawFileB();
 	drawFileG();
-	drawFileS();
+	//drawFileS()
 
 	glFlush();
 }
@@ -56,9 +56,9 @@ void setup() {
 	createArrayG();
 	currObj = 2;
 
-	fp = fopen("stadium2.obj", "r");
+/*	fp = fopen("stadium.obj", "r");
 	countLines();
-	createArrayS();
+	createArrayS();*/
 }
 
 void main(int argc, char** argv)
