@@ -1,6 +1,9 @@
 #ifndef GLOBAL_VARIABLES_H
 #define GLOBAL_VARIABLES_H
-#include <freeglut.h>
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <GL\freeglut.h>
+#include <Windows.h>
 #include <stdio.h>
 
 extern FILE *fp;

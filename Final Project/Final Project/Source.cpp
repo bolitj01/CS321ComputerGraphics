@@ -1,16 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define _USE_MATH_DEFINES
-#include <freeglut.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <malloc.h>
-#include <string.h>
-#include <ctype.h>
-#include <Windows.h>
-#include <math.h>
-#include <../Final Project/Final Project/Final Project/DrawModels.h>
-#include <../Final Project/Final Project/Final Project/Interaction.h>
-#include <../Final Project/Final Project/Final Project/GlobalVariables.h>
+
+#include "DrawModels.h"
+#include "GlobalVariables.h"
+#include "Interaction.h"
+
 FILE *fp;
 char fileName[50]; //Holds the  file name
 int numOfLines; //Number of lines in the input file

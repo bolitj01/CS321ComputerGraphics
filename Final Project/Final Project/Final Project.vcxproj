@@ -71,17 +71,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Kimmy\Documents\Visual Studio 2015\Projects\Final Project;C:\Users\Kimmy\libraries\glew-2.1.0\include\GL;C:\Users\Kimmy\libraries\freeglut\include\GL;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Kimmy\libraries\glew-2.1.0\lib\Release\Win32;C:\Users\Kimmy\libraries\freeglut\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Thomas Bolinger\libraries\glew-2.1.0\include;C:\Users\Thomas Bolinger\libraries\freeglut\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Thomas Bolinger\Libraries\freeglut\lib;C:\Users\Thomas Bolinger\Libraries\glew-2.1.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\Thomas Bolinger\libraries\glew-2.1.0\include;C:\Users\Thomas Bolinger\libraries\freeglut\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Thomas Bolinger\Libraries\freeglut\lib;C:\Users\Thomas Bolinger\Libraries\glew-2.1.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\Thomas Bolinger\libraries\glew-2.1.0\include;C:\Users\Thomas Bolinger\libraries\freeglut\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Thomas Bolinger\Libraries\freeglut\lib;C:\Users\Thomas Bolinger\Libraries\glew-2.1.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\Thomas Bolinger\libraries\glew-2.1.0\include;C:\Users\Thomas Bolinger\libraries\freeglut\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Thomas Bolinger\Libraries\freeglut\lib;C:\Users\Thomas Bolinger\Libraries\glew-2.1.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -95,6 +101,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glew32.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -109,6 +116,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glew32.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -127,6 +135,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glew32.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -145,6 +154,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glew32.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -153,8 +163,24 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DrawModels.h" />
     <ClInclude Include="GlobalVariables.h" />
     <ClInclude Include="Interaction.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="soccerball.obj">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </Text>
+    <Text Include="soccergoal.obj">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="freeglut.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

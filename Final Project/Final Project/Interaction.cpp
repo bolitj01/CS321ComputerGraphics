@@ -1,14 +1,4 @@
-
-#define _CRT_SECURE_NO_WARNINGS
-#include <freeglut.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <malloc.h>
-#include <string.h>
-#include <ctype.h>
-#include <Windows.h>
-
-#include <../Final Project/Final Project/Final Project/GlobalVariables.h>
+#include "GlobalVariables.h"
 
 
 //Gets position of mouse when left button is depressed
