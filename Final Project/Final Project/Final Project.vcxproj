@@ -71,8 +71,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Thomas Bolinger\libraries\glew-2.1.0\include;C:\Users\Thomas Bolinger\libraries\freeglut\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Thomas Bolinger\Libraries\freeglut\lib;C:\Users\Thomas Bolinger\Libraries\glew-2.1.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Kimmy\libraries\glew-2.1.0\include\GL;C:\Users\Kimmy\libraries\freeglut\include\GL;C:\Users\Thomas Bolinger\libraries\glew-2.1.0\include;C:\Users\Thomas Bolinger\libraries\freeglut\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Kimmy\libraries\glew-2.1.0\lib\Release\Win32;C:\Users\Kimmy\libraries\freeglut\lib;C:\Users\Thomas Bolinger\Libraries\freeglut\lib;C:\Users\Thomas Bolinger\Libraries\glew-2.1.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>

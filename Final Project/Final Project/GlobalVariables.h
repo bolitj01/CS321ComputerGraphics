@@ -2,7 +2,7 @@
 #define GLOBAL_VARIABLES_H
 
 #define _CRT_SECURE_NO_WARNINGS
-#include <GL\freeglut.h>
+#include <freeglut.h>
 #include <Windows.h>
 #include <stdio.h>
 
