@@ -11,7 +11,7 @@ void display(void) {
 	glColor3f(1.0, 0.0, 0.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(0, 0, 800, 0, 0, 0, 0, 1, 0);
+	gluLookAt(-400, 0, 0, 0, 0, 0, 0, 1, 0);
 	glRotatef(xRot, 1.0, 0.0, 0.0);
 	glRotatef(yRot, 0.0, 1.0, 0.0);
 	glRotatef(zRot, 0.0, 0.0, 1.0);
@@ -19,7 +19,7 @@ void display(void) {
 	glTranslatef(xMove, yMove, zMove);
 	drawFileB();
 	drawFileG();
-	//drawFileS()
+	drawFileS();
 
 	glFlush();
 }

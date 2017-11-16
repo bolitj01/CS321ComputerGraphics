@@ -11,11 +11,11 @@ void initWindow(int &argc, char **argv) {
 }
 
 void initializeViewingVolume() {
-	worldLeft = -200;
-	worldRight = 200;
-	worldBottom = -200;
-	worldTop = 200;
-	worldNear = 200;
-	worldFar = 1000;
+	worldLeft = -350;
+	worldRight = 350;
+	worldBottom = -400;
+	worldTop = 400;
+	worldNear = 400;
+	worldFar = 4000;
 }
 
