@@ -49,7 +49,7 @@ void keyPress(unsigned char key, int x, int y)
 	}
 	else if ((key == 'N') || (key == 'n')) {
 		//Move back along Z axis
-		zMove += 40;
+		zMove -= 40;
 	}
 	else if (key == '+') {
 		//Enlarge
@@ -85,10 +85,10 @@ void keyPress(unsigned char key, int x, int y)
 	}
 	else if (key == 'I' || key == 'i') {
 		//Resets image
-		xRot = 15;
-		yRot = 90;
-		zRot = 0;
-		scaleAmount = 1.0;
+		xRot = 0;
+		yRot = 0;
+		zRot = 15;
+		scaleAmount = 3.0;
 		xMove = 0;
 		yMove = 0;
 	}

@@ -17,6 +17,7 @@ extern int numOfFB;//Number of faces in ball file
 extern int numOfFS;//Number of faces in stadium file
 extern int * arrayPtr; //Pointer to dynamically allotted array
 extern double *vertice;//Holds current x, y, z, and w values to be drawn
+extern double *verticeNorm;
 extern int xRot;//Holds number of degrees to rotate around x axis
 extern int yRot;//Holds number of degrees to rotate around y axis
 extern int zRot;//Holds number of degrees to rotate around z axis

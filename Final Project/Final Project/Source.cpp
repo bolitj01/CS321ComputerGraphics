@@ -16,13 +16,14 @@ int numOfFB;//Number of faces in ball file
 int numOfFS;//Number of faces in stadium file
 int * arrayPtr; //Pointer to dynamically allotted array
 double *vertice = (double *)calloc(4, sizeof(double));//Holds current x, y, z, and w values to be drawn
-int xRot = 15;//Holds number of degrees to rotate around x axis
-int yRot = 135;//Holds number of degrees to rotate around y axis
-int zRot = 0;//Holds number of degrees to rotate around z axis
+double *verticeNorm = (double *)calloc(4, sizeof(double));//Holds current x, y, z, and w values to be drawn
+int xRot = 0;//Holds number of degrees to rotate around x axis
+int yRot = 0;//Holds number of degrees to rotate around y axis
+int zRot = 15;//Holds number of degrees to rotate around z axis
 int xMove = 0;//Holds amount to move along x axis
 int yMove = 0;//Holds amount to move along y axis
 int zMove = 0;//Holds amount to move along z axis
-double scaleAmount = 1.0;//Holds amount to scale by
+double scaleAmount = 3.0;//Holds amount to scale by
 double origX, origY;//Holds the original x and y values when mouse is depressed
 int mode = 0;//Defines mode for mouse motion. Holds 0 for drag and drop mode and 1 for rotate mode
 double *verticeArrG;
@@ -35,7 +36,6 @@ double *verticeArrS;
 double *normVecArrS;
 int *faceArrS;
 int currObj = 0; //Object file being read, 0 = ball, 1 = goal
-
 
 void initWindow(int &argc, char **argv) {
 	glutInit(&argc, argv);
@@ -50,19 +50,24 @@ void display(void) {
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glFrustum(-200, 200, -200, 200, 200, 1000);
+	//glOrtho(-400, 400, -400, 400, -400, 400);
+	glFrustum(-350, 350, -400, 400, 400, 2000);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glColor3f(1.0, 0.0, 0.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(0, 0, 800, 0, 0, 0, 0, 1, 0);
+	gluLookAt(-400, 000, 000, 0, 0, 0, 0, 1, 0);
 	glRotatef(xRot, 1.0, 0.0, 0.0);
 	glRotatef(yRot, 0.0, 1.0, 0.0);
 	glRotatef(zRot, 0.0, 0.0, 1.0);
 	glScalef(scaleAmount, scaleAmount, scaleAmount);
 	glTranslatef(xMove, yMove, zMove);
+
 	drawFileB();
+	glPushMatrix();
+	//glTranslatef(300, 0, 200);
 	drawFileG();
+	glPopMatrix();
 	//drawFileS()
 
 	glFlush();
