@@ -4,8 +4,8 @@
 
 //Counts number of vector and face lines in the file
 void countLines();
-void createArrayG();
-void createArrayB();
+void createGoalData();
+void createBallData();
 void createArrayS();
 void drawFileG();
 void drawFileB();

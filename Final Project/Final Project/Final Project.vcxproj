@@ -97,6 +97,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,6 +130,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -159,13 +161,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DrawModels.cpp" />
-    <ClCompile Include="Interaction.cpp" />
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Initialization.cpp" />
+    <ClCompile Include="CallbackFunctions.cpp" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DrawModels.h" />
     <ClInclude Include="GlobalVariables.h" />
-    <ClInclude Include="Interaction.h" />
+    <ClInclude Include="Initialization.h" />
+    <ClInclude Include="CallbackFunctions.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="soccerball.obj">
@@ -181,6 +185,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="freeglut.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Libraries\bullet-2.82-r2704\bullet-2.82-r2704\build\vs2010\BulletCollision.vcxproj">
+      <Project>{ff379e78-36a8-ee49-8510-5b733d15f81f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\bullet-2.82-r2704\bullet-2.82-r2704\build\vs2010\BulletDynamics.vcxproj">
+      <Project>{3eed29d6-3e07-a541-8e7f-ca8cf8f62b9e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\bullet-2.82-r2704\bullet-2.82-r2704\build\vs2010\LinearMath.vcxproj">
+      <Project>{c1851171-5513-284f-a9a5-241f4923a4ce}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

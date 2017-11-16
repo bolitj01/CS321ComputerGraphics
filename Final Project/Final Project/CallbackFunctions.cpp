@@ -1,29 +1,56 @@
-#include "GlobalVariables.h"
+#include "CallbackFunctions.h"
 
+//Display the scene in its current state
+void display(void) {
+
+	glClearColor(1.0, 1.0, 1.0, 1.0);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glFrustum(worldLeft, worldRight, worldBottom, worldTop, worldNear, worldFar);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glColor3f(1.0, 0.0, 0.0);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(0, 0, 800, 0, 0, 0, 0, 1, 0);
+	glRotatef(xRot, 1.0, 0.0, 0.0);
+	glRotatef(yRot, 0.0, 1.0, 0.0);
+	glRotatef(zRot, 0.0, 0.0, 1.0);
+	glScalef(scaleAmount, scaleAmount, scaleAmount);
+	glTranslatef(xMove, yMove, zMove);
+	drawFileB();
+	drawFileG();
+	//drawFileS()
+
+	glFlush();
+}
 
 //Gets position of mouse when left button is depressed
-void mouse(int button, int state, int x, int y)
+void mouseClick(int button, int state, int x, int y)
 {
+	previousMouseX = x;
+	previousMouseY = y;
+	//Left click for ball shooting
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-		origX = x;
-		origY = y;
+		
+	}
+	//Right click for camera rotation
+	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
+		glutMotionFunc(mouseCameraRotation);
 	}
 }
-//Calculates the mouse's x and y motion continually and updates the transformation matrix according to the mode
-void mouseMotion(int x, int y)
+
+//Use mouse to rotate the camera around the ball
+void mouseCameraRotation(int x, int y)
 {
-	if (mode == 0) {
-		xMove += (x - origX) / 5;
-		yMove += (origY - y) / 5;
-		glutPostRedisplay();
-	}
-	else if (mode == 1) {
-		xRot += (y - origY) / 50;
-		yRot += (x - origX) / 50;
-		glutPostRedisplay();
-	}
+	//Calculate change in mouse position
+	xRot -= (previousMouseY - y);
+	yRot -= (previousMouseX - x);
+	previousMouseX = x;
+	previousMouseY = y;
+	glutPostRedisplay();
 }
+
 //Controls actions for various key presses
 void keyPress(unsigned char key, int x, int y)
 {
