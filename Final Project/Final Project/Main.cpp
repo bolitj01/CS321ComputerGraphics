@@ -54,7 +54,7 @@ void setup() {
 	countLines();
 	createGoalData();
 	currObj = 2;
-
+	
 	/*fp = fopen("stadium.obj", "r");
 	countLines();
 	createArrayS();*/

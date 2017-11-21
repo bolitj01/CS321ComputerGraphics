@@ -18,9 +18,11 @@ void display(void) {
 	glScalef(scaleAmount, scaleAmount, scaleAmount);
 	glTranslatef(xMove, yMove, zMove);
 	drawFileB();
-	drawFileG();
+	//drawFileG();
+	/*glPushMatrix();
+	glScalef(50, 50, 50);
 	drawFileS();
-
+	glPopMatrix();*/
 	glFlush();
 }
 
