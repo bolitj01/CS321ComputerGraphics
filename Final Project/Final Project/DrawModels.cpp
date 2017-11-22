@@ -128,23 +128,23 @@ void drawFileG() {
 	for (i = 0; i < numOfFG; i++) {
 		glColor3f(.4, .4, .3);
 		vertexNum = faceArrGoal[i * 6];//First vertex
-		vertice[0] = verticeArrGoal[(vertexNum * 3) - 3] + 400;
-		vertice[1] = verticeArrGoal[(vertexNum * 3) - 2];
-		vertice[2] = verticeArrGoal[(vertexNum * 3) - 1] + 200;
-		vertice[3] = 1;
-		glVertex3f(vertice[0], vertice[1], vertice[2]);
+		vertex[0] = verticeArrGoal[(vertexNum * 3) - 3];
+		vertex[1] = verticeArrGoal[(vertexNum * 3) - 2];
+		vertex[2] = verticeArrGoal[(vertexNum * 3) - 1];
+		vertex[3] = 1;
+		glVertex3f(vertex[0], vertex[1], vertex[2]);
 		vertexNum = faceArrGoal[i * 6 + 2];//Second vertex
-		vertice[0] = verticeArrGoal[(vertexNum * 3) - 3] + 400;
-		vertice[1] = verticeArrGoal[(vertexNum * 3) - 2];
-		vertice[2] = verticeArrGoal[(vertexNum * 3) - 1] + 200;
-		vertice[3] = 1;
-		glVertex3f(vertice[0], vertice[1], vertice[2]);
+		vertex[0] = verticeArrGoal[(vertexNum * 3) - 3];
+		vertex[1] = verticeArrGoal[(vertexNum * 3) - 2];
+		vertex[2] = verticeArrGoal[(vertexNum * 3) - 1];
+		vertex[3] = 1;
+		glVertex3f(vertex[0], vertex[1], vertex[2]);
 		vertexNum = faceArrGoal[i * 6 + 4];//Third vertex
-		vertice[0] = verticeArrGoal[(vertexNum * 3) - 3] + 400;
-		vertice[1] = verticeArrGoal[(vertexNum * 3) - 2];
-		vertice[2] = verticeArrGoal[(vertexNum * 3) - 1] + 200;
-		vertice[3] = 1;
-		glVertex3f(vertice[0], vertice[1], vertice[2]);
+		vertex[0] = verticeArrGoal[(vertexNum * 3) - 3];
+		vertex[1] = verticeArrGoal[(vertexNum * 3) - 2];
+		vertex[2] = verticeArrGoal[(vertexNum * 3) - 1];
+		vertex[3] = 1;
+		glVertex3f(vertex[0], vertex[1], vertex[2]);
 	}
 	glEnd();
 }
@@ -156,23 +156,23 @@ void drawFileB() {
 	for (i = 0; i < numOfFB; i++) {
 		glColor3f(0.0, 0.0, 0.0);
 		vertexNum = faceArrBall[i * 3];//First vertex
-		vertice[0] = verticeArrBall[(vertexNum * 3) - 3];
-		vertice[1] = verticeArrBall[(vertexNum * 3) - 2];
-		vertice[2] = verticeArrBall[(vertexNum * 3) - 1];
-		vertice[3] = 1;
-		glVertex3f(vertice[0], vertice[1], vertice[2]);
+		vertex[0] = verticeArrBall[(vertexNum * 3) - 3];
+		vertex[1] = verticeArrBall[(vertexNum * 3) - 2];
+		vertex[2] = verticeArrBall[(vertexNum * 3) - 1];
+		vertex[3] = 1;
+		glVertex3f(vertex[0], vertex[1], vertex[2]);
 		vertexNum = faceArrBall[i * 3 + 1];//Second vertex
-		vertice[0] = verticeArrBall[(vertexNum * 3) - 3];
-		vertice[1] = verticeArrBall[(vertexNum * 3) - 2];
-		vertice[2] = verticeArrBall[(vertexNum * 3) - 1];
-		vertice[3] = 1;
-		glVertex3f(vertice[0], vertice[1], vertice[2]);
+		vertex[0] = verticeArrBall[(vertexNum * 3) - 3];
+		vertex[1] = verticeArrBall[(vertexNum * 3) - 2];
+		vertex[2] = verticeArrBall[(vertexNum * 3) - 1];
+		vertex[3] = 1;
+		glVertex3f(vertex[0], vertex[1], vertex[2]);
 		vertexNum = faceArrBall[i * 3 + 2];//Third vertex
-		vertice[0] = verticeArrBall[(vertexNum * 3) - 3];
-		vertice[1] = verticeArrBall[(vertexNum * 3) - 2];
-		vertice[2] = verticeArrBall[(vertexNum * 3) - 1];
-		vertice[3] = 1;
-		glVertex3f(vertice[0], vertice[1], vertice[2]);
+		vertex[0] = verticeArrBall[(vertexNum * 3) - 3];
+		vertex[1] = verticeArrBall[(vertexNum * 3) - 2];
+		vertex[2] = verticeArrBall[(vertexNum * 3) - 1];
+		vertex[3] = 1;
+		glVertex3f(vertex[0], vertex[1], vertex[2]);
 	}
 	glEnd();
 
@@ -185,23 +185,62 @@ void drawFileS() {
 	for (i = 0; i < numOfFS; i++) {
 		glColor3f(.4, .4, .3);
 		vertexNum = faceArrStadium[i * 9];//First vertex
-		vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
-		vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
-		vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
-		vertice[3] = 1;
-		glVertex3f(vertice[0], vertice[1], vertice[2]);
+		vertex[0] = verticeArrStadium[(vertexNum * 3) - 3];
+		vertex[1] = verticeArrStadium[(vertexNum * 3) - 2];
+		vertex[2] = verticeArrStadium[(vertexNum * 3) - 1];
+		vertex[3] = 1;
+		glVertex3f(vertex[0], vertex[1], vertex[2]);
 		vertexNum = faceArrStadium[i * 9 + 3];//Second vertex
-		vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
-		vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
-		vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
-		vertice[3] = 1;
-		glVertex3f(vertice[0], vertice[1], vertice[2]);
+		vertex[0] = verticeArrStadium[(vertexNum * 3) - 3];
+		vertex[1] = verticeArrStadium[(vertexNum * 3) - 2];
+		vertex[2] = verticeArrStadium[(vertexNum * 3) - 1];
+		vertex[3] = 1;
+		glVertex3f(vertex[0], vertex[1], vertex[2]);
 		vertexNum = faceArrStadium[i * 9 + 6];//Third vertex
-		vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
-		vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
-		vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
-		vertice[3] = 1;
-		glVertex3f(vertice[0], vertice[1], vertice[2]);
+		vertex[0] = verticeArrStadium[(vertexNum * 3) - 3];
+		vertex[1] = verticeArrStadium[(vertexNum * 3) - 2];
+		vertex[2] = verticeArrStadium[(vertexNum * 3) - 1];
+		vertex[3] = 1;
+		glVertex3f(vertex[0], vertex[1], vertex[2]);
 	}
 	glEnd();
+}
+
+//Calculate object's bottom center
+double* getObjectBottomCenter(int vertexCount, double* vertices) {
+
+	double* bottomCenter = (double*)calloc(3, sizeof(double));
+
+	float highX = 0, lowX = 0, lowY = 0, highZ = 0, lowZ = 0;
+
+	for (int i = 0; i < vertexCount; i++) {
+		if (vertices[i * 3] > highX) {
+			highX = vertices[i * 3];
+		}
+		else if (vertices[i * 3] < lowX) {
+			lowX = vertices[i * 3];
+		}
+		
+		if (vertices[i * 3 + 1] < lowY) {
+			lowY = vertices[i * 3 + 1];
+		}
+
+		if (vertices[i * 3 + 2] > highZ) {
+			highZ = vertices[i * 3 + 2];
+		}
+		else if (vertices[i * 3 + 2] < lowZ) {
+			lowZ = vertices[i * 3 + 2];
+		}
+	}
+
+	bottomCenter[0] = (highX + lowX) / 2;
+	bottomCenter[1] = lowY;
+	bottomCenter[2] = (highZ + lowZ) / 2;
+
+	//Get radius if object is the ball
+	if (currObj == 0) {
+		ballRadius = (highX - lowX) / 2;
+	}
+
+	return bottomCenter;
 }

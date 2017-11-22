@@ -15,36 +15,38 @@ worldTop, worldNear, worldFar; //Coordinates of the viewing volume
 extern int numOfLines; //Number of lines in the input file
 extern int numOfData; //Number of data in file
 extern int numOfV; //Number of vertices in file
-extern int numOfVN;//Number of normal vectors in the file
-extern int numOfFG;//Number of faces in goal file
-extern int numOfFB;//Number of faces in ball file
-extern int numOfFS;//Number of faces in stadium file
+extern int numOfVN; //Number of normal vectors in the file
+extern int numOfFG; //Number of faces in goal file
+extern int numOfFB; //Number of faces in ball file
+extern int numOfFS; //Number of faces in stadium file
 
-extern int * arrayPtr; //Pointer to dynamically allotted array
-extern double *vertice;//Holds current x, y, z, and w values to be drawn
+extern int* arrayPtr; //Pointer to dynamically allotted array
+extern double *vertex; //Holds current x, y, z, and w values to be drawn
 
-extern int xRot;//Holds number of degrees to rotate around x axis
-extern int yRot;//Holds number of degrees to rotate around y axis
-extern int zRot;//Holds number of degrees to rotate around z axis
+extern float yGoalRot; //Holds number of degrees to rotate around y axis
 
-extern int xMove;//Holds amount to move along x axis
-extern int yMove;//Holds amount to move along y axis
-extern int zMove;//Holds amount to move along z axis
-
-extern double scaleAmount; //Holds amount to scale by
+extern float cameraZLocation;
+extern float xCameraRot; //Degrees to rotate camera on x axis
+extern float yCameraRot; //Degrees to rotate camera on y axis
+extern float* cameraLocation; //Vector for camera location
+extern float* cameraAtVertex; //At vector for camera's direction of looking
+extern float* cameraUpVector; //Up vector for camera orthogonal to look vector
 
 extern double previousMouseX, previousMouseY; //Holds the original x and y values when mouse is depressed
-extern int mode; //Defines mode for mouse motion. Holds 0 for drag and drop mode and 1 for rotate mode
 
-				 //Data for goal object
+//Data for goal object
 extern double *verticeArrGoal;
 extern double *normVecArrGoal;
 extern int *faceArrGoal;
+extern double goalZLocation;
+extern double* goalBottomCenter;
 
 //Data for ball object
 extern double *verticeArrBall;
 extern double *normVecArrBall;
 extern int *faceArrBall;
+extern double* ballBottomCenter;
+extern float ballRadius;
 
 //Data for stadium object
 extern double *verticeArrStadium;

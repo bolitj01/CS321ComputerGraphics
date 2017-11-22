@@ -10,5 +10,6 @@ void createArrayS();
 void drawFileG();
 void drawFileB();
 void drawFileS();
+double* getObjectBottomCenter(int vertexCount, double* vertices);
 
 #endif

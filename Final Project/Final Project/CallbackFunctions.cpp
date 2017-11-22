@@ -3,26 +3,47 @@
 //Display the scene in its current state
 void display(void) {
 
+	//Clear screen
 	glClearColor(1.0, 1.0, 1.0, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	//Set projection
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glFrustum(worldLeft, worldRight, worldBottom, worldTop, worldNear, worldFar);
-	glClear(GL_COLOR_BUFFER_BIT);
-	glColor3f(1.0, 0.0, 0.0);
+	//glFrustum(worldLeft, worldRight, worldBottom, worldTop, worldNear, worldFar);
+	gluPerspective(50, 1, worldNear, worldFar);
+	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(-400, 0, 0, 0, 0, 0, 0, 1, 0);
-	glRotatef(xRot, 1.0, 0.0, 0.0);
-	glRotatef(yRot, 0.0, 1.0, 0.0);
-	glRotatef(zRot, 0.0, 0.0, 1.0);
-	glScalef(scaleAmount, scaleAmount, scaleAmount);
-	glTranslatef(xMove, yMove, zMove);
+	
+	//Set camera
+	//updateCameraUpVector();
+	gluLookAt(cameraLocation[0], cameraLocation[1], cameraLocation[2], 
+			  cameraAtVertex[0], cameraAtVertex[1], cameraAtVertex[2], 
+			  cameraUpVector[0], cameraUpVector[1], cameraUpVector[2]);
+
+	//Rotate camera
+	glRotatef(yCameraRot, 0, 1, 0);
+	glRotatef(xCameraRot, 1, 0, 0);
+
+	//Draw goal
+	glPushMatrix();
+	glTranslatef(0, 0, goalZLocation);
+	glRotatef(yGoalRot, 0, 1, 0);
+	glTranslatef(-goalBottomCenter[0], -goalBottomCenter[1], -goalBottomCenter[2]);
+	drawFileG();
+	glPopMatrix();
+	
+
+	//Draw ball
+	glPushMatrix();
+	glTranslatef(-ballBottomCenter[0], -ballBottomCenter[1] + ballRadius, -ballBottomCenter[2]);
 	drawFileB();
-	//drawFileG();
-	/*glPushMatrix();
-	glScalef(50, 50, 50);
-	drawFileS();
-	glPopMatrix();*/
+	glPopMatrix();
+	
+	//drawFileS();
+
+	glutSwapBuffers();
 	glFlush();
 }
 
@@ -46,8 +67,11 @@ void mouseClick(int button, int state, int x, int y)
 void mouseCameraRotation(int x, int y)
 {
 	//Calculate change in mouse position
-	xRot -= (previousMouseY - y);
-	yRot -= (previousMouseX - x);
+	float changeY = (previousMouseY - y) / 5;
+	if (xCameraRot + changeY < 0 && xCameraRot + changeY > -90) {
+		xCameraRot += changeY;
+	}
+	yCameraRot -= (previousMouseX - x) / 5;
 	previousMouseX = x;
 	previousMouseY = y;
 	glutPostRedisplay();
@@ -56,83 +80,27 @@ void mouseCameraRotation(int x, int y)
 //Controls actions for various key presses
 void keyPress(unsigned char key, int x, int y)
 {
-	if ((key == 'U') || (key == 'u')) {
-		//Move forward along Y axis
-		yMove += 40;
-	}
-	else if ((key == 'D') || (key == 'd')) {
-		//Move backward along Y axis
-		yMove -= 40;
-	}
-	else if ((key == 'L') || (key == 'l')) {
-		//Move backward along X axis
-		xMove -= 40;
-	}
-	else if ((key == 'R') || (key == 'r')) {
-		//Move forward along X axis
-		xMove += 40;
-	}
-	else if ((key == 'F') || (key == 'f')) {
-		//Move forward along Z axis
-		zMove += 40;
-	}
-	else if ((key == 'N') || (key == 'n')) {
-		//Move back along Z axis
-		zMove -= 40;
-	}
-	else if (key == '+') {
-		//Enlarge
-		scaleAmount += .1;
-	}
-	else if (key == '-') {
-		//Shrink
-		scaleAmount -= .1;
-	}
-	else if (key == 'x') {
-		//Rotate +15 degrees around x axis
-		xRot += 15;
-	}
-	else if (key == 'X') {
-		//Rotate -15 degrees around x axis
-		xRot -= 15;
+	//Rotate camera 15 degrees around y axis
+	if (key == 'Y') {
+		yCameraRot += 15;
 	}
 	else if (key == 'y') {
-		//Rotate +15 degrees around y axis
-		yRot += 15;
+		yCameraRot -= 15;
 	}
-	else if (key == 'Y') {
-		//Rotate -15 degrees around y axis
-		yRot -= 15;
+	//Rotate camera 15 degrees around x axis
+	if (key == 'X') {
+		xCameraRot += 15;
 	}
-	else if (key == 'z') {
-		//Rotate +15 degrees around z axis
-		zRot += 15;
-	}
-	else if (key == 'Z') {
-		//Rotate -15 degrees around z axis
-		zRot -= 15;
+	else if (key == 'x') {
+		xCameraRot -= 15;
 	}
 	else if (key == 'I' || key == 'i') {
 		//Resets image
-		xRot = 0;
-		yRot = 0;
-		zRot = 15;
-		scaleAmount = 3.0;
-		xMove = 0;
-		yMove = 0;
+		initializeCamera();
 	}
 	else if (key == 'Q' || key == 'q') {
 		//Exits program
 		exit(0);
-	}
-	else if (key == 'T' || key == 't') {
-		//Toggles mode, 0 for drag and drop, 1 for rotate.
-		if (mode == 0) {
-			mode = 1;
-		}
-		else {
-			mode = 0;
-		}
 	}
 	glutPostRedisplay();
 }

@@ -4,18 +4,39 @@
 
 void initWindow(int &argc, char **argv) {
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_RGB);
+	glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE);
 	glutInitWindowSize(500, 500);
 	glutInitWindowPosition(0, 0);
-	glutCreateWindow("Problem #1");
+	glutCreateWindow("Soccer Simulator");
 }
 
 void initializeViewingVolume() {
-	worldLeft = -350;
-	worldRight = 350;
-	worldBottom = -400;
-	worldTop = 400;
-	worldNear = 400;
-	worldFar = 4000;
+	worldLeft = -15;
+	worldRight = 15;
+	worldBottom = -15;
+	worldTop = 15;
+	worldNear = 15;
+	worldFar = 10000;
+}
+
+void initializeCamera() {
+	cameraLocation[0] = 0;
+	cameraLocation[1] = ballRadius;
+	cameraLocation[2] = -150;
+
+	cameraAtVertex[0] = 0;
+	cameraAtVertex[1] = ballRadius;
+	cameraAtVertex[2] = 0;
+
+	cameraUpVector[0] = 0;
+	cameraUpVector[1] = 1;
+	cameraUpVector[2] = 0;
+
+	xCameraRot = -5;
+	yCameraRot = 0;
+}
+
+void initializeBallGoal() {
+	goalZLocation = 1500;
 }
 
