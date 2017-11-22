@@ -3,58 +3,8 @@
 //Display the scene in its current state
 void display(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	/*glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	//glOrtho(-200, 200, -200, 200, -200, 200);
-	glFrustum(worldLeft, worldRight, worldBottom, worldTop, worldNear, worldFar);
-	glClear(GL_COLOR_BUFFER_BIT);
-	glColor3f(1.0, 0.0, 0.0);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, diffuseLight);
-	gluLookAt(-400, 0, 0, 0, 0, 0, 0, 1, 0);
-	glRotatef(xRot, 1.0, 0.0, 0.0);
-	glRotatef(yRot, 0.0, 1.0, 0.0);
-	glRotatef(zRot, 0.0, 0.0, 1.0);
-	glScalef(scaleAmount, scaleAmount, scaleAmount);
-	glTranslatef(xMove, yMove, zMove);
-	drawFileB();
-	drawFileG();
-	glPushMatrix();
-	drawFileS();
-	glPopMatrix();*/
-	glMatrixMode(GL_MODELVIEW);
 	
-	/*glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
-	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-	glLightfv(GL_LIGHT0, GL_EMISSION, emissiveLight);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emissiveLight);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, diffuseLight);
-	glEnable(GL_LIGHT0);
-
-	// Directional Light
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse_light1);
-	glLightfv(GL_LIGHT1, GL_SPECULAR, specularLight);
-	glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
-	glLoadIdentity();
-	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spot_direction1);
-	glLighti(GL_LIGHT1, GL_SPOT_EXPONENT, exponent);
-
-
-	glPushMatrix();
-	glLoadIdentity();
-	glRotatef(lightRot, 0, 1, 0);
-	//Positional Light
-	glLightfv(GL_LIGHT2, GL_DIFFUSE, diffuse_light2);
-	glLightfv(GL_LIGHT2, GL_SPECULAR, specularLight);
-	glLightfv(GL_LIGHT2, GL_POSITION, light_position2);
-	glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, cutoff);
-	glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, spot_direction2);
-	glLighti(GL_LIGHT2, GL_SPOT_EXPONENT, exponent);
-	glPopMatrix();*/
-
+	glMatrixMode(GL_MODELVIEW);
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
@@ -79,20 +29,19 @@ void display(void) {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, diffuseLight);
 	glEnable(GL_LIGHT0);
 	
-	drawFileB();
+
 	//drawFileG();
-	//drawFileS();
-	/*
+
+	//STADIUM
 	glTranslatef(500, 0, 0);
+	glPushMatrix();
+	glScalef(50, 50, 50);
 	glRotatef(30, 0, 0, 1);
-	//glScalef(.1, .1, .1);
-	drawFileB();
-	drawFileG();
-	glScalef(1000, 1000, 1000);
-	glTranslatef(-2.4, 0, 0);
 	drawFileS();
 	glPopMatrix();
-	*/
+
+	//BALL
+	//drawFileB();
 
 	//glEnable(GL_CULL_FACE);
 	glFlush();

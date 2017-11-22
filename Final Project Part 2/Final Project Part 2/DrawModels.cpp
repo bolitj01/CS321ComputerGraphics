@@ -1,4 +1,5 @@
 #include "DrawModels.h"
+#include "TextureMapping.h"
 
 //Counts number of vector and face lines in the file
 void countLines() {
@@ -7,6 +8,7 @@ void countLines() {
 	numOfV = 0;
 	numOfVN = 0;
 	numOfVT = 0;
+	numOfMat = 0;
 	int res = fscanf(fp, "%s", lineHeader);
 	while (res != EOF) {
 		if (strcmp(lineHeader, "v") == 0) {
@@ -18,6 +20,9 @@ void countLines() {
 		}
 		else if (strcmp(lineHeader, "vt") == 0) {
 			numOfVT++;
+		}
+		else if (strcmp(lineHeader, "g") == 0) {
+			numOfMat++;
 		}
 		else if (strcmp(lineHeader, "f") == 0) {
 			if (currObj == 0) {
@@ -66,6 +71,7 @@ void createGoalData() {
 }
 
 void createBallData() {
+	//initialiseTextures("soccerMap3.ppm");
 	rewind(fp);
 	int countv = 0;
 	int countvn = 0;
@@ -105,15 +111,28 @@ void createArrayS() {
 	rewind(fp);
 	int countv = 0;
 	int countvn = 0;
+	int countvt = 0;
 	int countf = 0;
+	int countm = 0;
 	int test;
 	char lineHeader[128];
 	verticeArrStadium = (float *)calloc(numOfV * 3, sizeof(float));
 	normVecArrStadium = (float *)calloc(numOfVN * 3, sizeof(float));
+	textVecArrStadium = (float *)calloc(numOfVT * 2, sizeof(float));
+	matArrStadium = (char *)calloc(numOfMat, sizeof(char));
 	faceArrStadium = (int *)calloc(numOfFS * 9, sizeof(int));
 	// read the first word of the line
 	int res = fscanf(fp, "%s", lineHeader);
 	while (res != EOF) {
+		if (strcmp(lineHeader, "g") == 0) {
+			fgets(lineHeader, 128, fp);
+			fgets(lineHeader, 128, fp);
+			materialType = strchr(lineHeader, ' ');
+			materialType++;
+			matArrStadium[countm] = materialType[0];
+			printf("TEST: %s, %c\n", materialType, matArrStadium[countm]);
+			countm++;
+		}
 		if (strcmp(lineHeader, "v") == 0) {
 			fscanf(fp, "%f %f %f\n", &verticeArrStadium[countv], &verticeArrStadium[countv + 1], &verticeArrStadium[countv + 2]);
 			countv += 3;
@@ -121,6 +140,11 @@ void createArrayS() {
 		else if (strcmp(lineHeader, "vn") == 0) {
 			fscanf(fp, "%f %f %f\n", &normVecArrStadium[countvn], &normVecArrStadium[countvn + 1], &normVecArrStadium[countvn + 2]);
 			countvn += 3;
+		}
+		else if (strcmp(lineHeader, "vt") == 0) {
+			fscanf(fp, "%f %f 0\n", &textVecArrStadium[countvt], &textVecArrStadium[countvt + 1]);
+			countvt += 2;
+
 		}
 		else if (strcmp(lineHeader, "f") == 0) {
 			/*fscanf(fp, "%d//%d %d//%d %d//%d", &faceArrStadium[countf], &faceArrStadium[countf + 1], &faceArrStadium[countf + 2], &faceArrStadium[countf + 3], &faceArrStadium[countf + 4], &faceArrStadium[countf + 5]);
@@ -182,6 +206,7 @@ void drawFileG() {
 }
 
 void drawFileB() {
+	initialiseTextures("soccerMap3.ppm");
 	int i = 0;
 	int vertexNum = 0;
 	int vertexNormNum = 0;
@@ -254,61 +279,24 @@ void drawFileB() {
 }
 
 void drawFileS() {
+	//initialiseTextures("field.ppm");
 	int i = 0;
 	int vertexNum = 0;
 	int vertexNormNum = 0;
-	/*glBegin(GL_TRIANGLES);
-	for (i = 0; i < numOfFS; i++) {
-		glColor3f(1.0, 1.0, 1.0);
-		vertexNormNum = faceArrStadium[i * 6 + 1];
-		verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
-		verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
-		verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
-		verticeNorm[3] = 1;
-		glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
-		vertexNum = faceArrStadium[i * 6];//First vertex
-		vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
-		vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
-		vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
-		vertice[3] = 1;
-		glVertex3f(vertice[0], vertice[1], vertice[2]);
+	int vertexTexNum = 0;
 
-		vertexNormNum = faceArrStadium[i * 6 + 3];
-		verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
-		verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
-		verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
-		verticeNorm[3] = 1;
-		glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
-		vertexNum = faceArrStadium[i * 6 + 2];//Second vertex
-		vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
-		vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
-		vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
-		vertice[3] = 1;
-		glVertex3f(vertice[0], vertice[1], vertice[2]);
-
-		vertexNormNum = faceArrStadium[i * 6 + 5];
-		verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
-		verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
-		verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
-		verticeNorm[3] = 1;
-		glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
-		vertexNum = faceArrStadium[i * 6 + 4];//Third vertex
-		vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
-		vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
-		vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
-		vertice[3] = 1;
-		glVertex3f(vertice[0], vertice[1], vertice[2]);
-	}
-	glEnd();*/
+	initialiseTextures("field.ppm");
 	glBegin(GL_TRIANGLES);
-	for (i = 0; i < numOfFS; i++) {
+	for (i = 130600; i < numOfFS; i++) {//Grass
 		glColor3f(1.0, 1.0, 1.0);
-		vertexNormNum = faceArrStadium[i * 9 + 1];
+		vertexNormNum = faceArrStadium[i * 9 + 2];
 		verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
 		verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
 		verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
 		verticeNorm[3] = 1;
 		glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+		vertexTexNum = faceArrStadium[i * 9 + 1];
+		glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
 		vertexNum = faceArrStadium[i * 9];//First vertex
 		vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
 		vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
@@ -316,12 +304,14 @@ void drawFileS() {
 		vertice[3] = 1;
 		glVertex3f(vertice[0], vertice[1], vertice[2]);
 
-		vertexNormNum = faceArrStadium[i * 9 + 4];
+		vertexNormNum = faceArrStadium[i * 9 + 5];
 		verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
 		verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
 		verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
 		verticeNorm[3] = 1;
 		glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+		vertexTexNum = faceArrStadium[i * 9 + 4];
+		glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
 		vertexNum = faceArrStadium[i * 9 + 3];//Second vertex
 		vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
 		vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
@@ -329,12 +319,64 @@ void drawFileS() {
 		vertice[3] = 1;
 		glVertex3f(vertice[0], vertice[1], vertice[2]);
 
-		vertexNormNum = faceArrStadium[i * 9 + 7];
+		vertexNormNum = faceArrStadium[i * 9 + 8];
 		verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
 		verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
 		verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
 		verticeNorm[3] = 1;
 		glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+		vertexTexNum = faceArrStadium[i * 9 + 7];
+		glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+		vertexNum = faceArrStadium[i * 9 + 6];//Third vertex
+		vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+		vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+		vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+		vertice[3] = 1;
+		glVertex3f(vertice[0], vertice[1], vertice[2]);
+	}
+	glEnd();
+	initialiseTextures("main.ppm");
+	glBegin(GL_TRIANGLES);
+	for (i = 0; i < 130600; i++) {//Stand seats
+		glColor3f(1.0, 1.0, 1.0);
+		vertexNormNum = faceArrStadium[i * 9 + 2];
+		verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+		verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+		verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+		verticeNorm[3] = 1;
+		glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+		vertexTexNum = faceArrStadium[i * 9 + 1];
+		glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+		vertexNum = faceArrStadium[i * 9];//First vertex
+		vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+		vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+		vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+		vertice[3] = 1;
+		glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+		vertexNormNum = faceArrStadium[i * 9 + 5];
+		verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+		verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+		verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+		verticeNorm[3] = 1;
+		glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+		vertexTexNum = faceArrStadium[i * 9 + 4];
+		glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+		vertexNum = faceArrStadium[i * 9 + 3];//Second vertex
+		vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+		vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+		vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+		vertice[3] = 1;
+		glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+		vertexNormNum = faceArrStadium[i * 9 + 8];
+		verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+		verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+		verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+		verticeNorm[3] = 1;
+		glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+		vertexTexNum = faceArrStadium[i * 9 + 7];
+		glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
 		vertexNum = faceArrStadium[i * 9 + 6];//Third vertex
 		vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
 		vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];

@@ -20,6 +20,7 @@ extern int numOfVT;//Number of texture vectors in the file
 extern int numOfFG;//Number of faces in goal file
 extern int numOfFB;//Number of faces in ball file
 extern int numOfFS;//Number of faces in stadium file
+extern int numOfMat;
 
 extern int * arrayPtr; //Pointer to dynamically allotted array
 extern float *vertice;//Holds current x, y, z, and w values to be drawn
@@ -53,6 +54,8 @@ extern int *faceArrBall;
 //Data for stadium object
 extern float *verticeArrStadium;
 extern float *normVecArrStadium;
+extern float *textVecArrStadium;
+extern char *matArrStadium;
 extern int *faceArrStadium;
 
 extern int currObj; //Object file being read, 0 = ball, 1 = goal
@@ -65,5 +68,6 @@ extern GLfloat diffuseLight[];
 extern int ImgWidth, ImgHeight;
 typedef GLubyte Pixel[3];
 extern Pixel *Image;
+extern char *materialType;
 
 #endif

@@ -21,6 +21,7 @@ int numOfVT;
 int numOfFG;//Number of faces in goal file
 int numOfFB;//Number of faces in ball file
 int numOfFS;//Number of faces in stadium file
+int numOfMat;
 int * arrayPtr; //Pointer to dynamically allotted array
 float *vertice = (float *)calloc(4, sizeof(float));//Holds current x, y, z, and w values to be drawn
 float *verticeNorm = (float *)calloc(4, sizeof(float));//Holds current x, y, z, and w normal values to be drawn
@@ -42,6 +43,8 @@ float *textVecArrBall;
 int *faceArrBall;
 float *verticeArrStadium;
 float *normVecArrStadium;
+float *textVecArrStadium;
+char *matArrStadium;
 int *faceArrStadium;
 int currObj = 0; //Object file being read, 0 = ball, 1 = goal
 float worldLeft, worldRight, worldBottom,
@@ -51,22 +54,23 @@ GLfloat  diffuseLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 int ImgWidth, ImgHeight;
 typedef GLubyte Pixel[3];
 Pixel *Image;
+char *materialType;
 
 void setup() {
 	//Reads data for models into arrays 
-	fp = fopen("soccer ball.obj", "r");
+	fp = fopen("soccer ball2.obj", "r");
 	countLines();
 	createBallData();
 	currObj = 1;
 
-	/*fp = fopen("soccergoal.obj", "r");
+	fp = fopen("soccergoal.obj", "r");
 	countLines();
 	createGoalData();
 	currObj = 2;
 
 	fp = fopen("stadium2.obj", "r");
 	countLines();
-	createArrayS();*/
+	createArrayS();
 }
 
 void main(int argc, char** argv)
@@ -74,8 +78,8 @@ void main(int argc, char** argv)
 	setup();
 	initWindow(argc, argv);
 	setupLight();
+	//initialiseTextures("soccerMap3.ppm");
 	initializeViewingVolume();
-	initialiseTextures();
 	glutDisplayFunc(display);
 	glutMouseFunc(mouseClick);
 	glutMotionFunc(mouseCameraRotation);

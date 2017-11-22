@@ -1,6 +1,6 @@
 #include "TextureMapping.h"
 
-void readImage(void)
+void readImage(char* fileName)
 /*reads the image file assumes ppm format*/
 {
 
@@ -11,9 +11,9 @@ void readImage(void)
 	char ch;
 	FILE *fp;
 
-	fp = fopen("soccermap3.ppm", "r");
+	fp = fopen(fileName, "r");
 
-	printf("filename = %s\n", "soccermap3.ppm");
+	printf("filename = %s\n", fileName);
 
 	/*read the header*/
 
@@ -68,14 +68,14 @@ void readImage(void)
 }
 
 
-void initialiseTextures(void)
+void initialiseTextures(char* fileName)
 {
 	GLint level = 0;      /*only one level - no level of detail*/
 	GLint components = 3; /*3 means R, G, and B components only*/
 	GLint border = 0;     /*no border around the image*/
 
 						  /*read the image file*/
-	readImage();
+	readImage(fileName);
 
 	/*each pixelrow on a byte alignment boundary*/
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
