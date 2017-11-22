@@ -5,12 +5,17 @@
 #include <freeglut.h>
 #include <Windows.h>
 #include <stdio.h>
+#include <btBulletDynamicsCommon.h>
 
 extern FILE *fp;
 extern char fileName[50]; //Holds the  file name
 
 extern float worldLeft, worldRight, worldBottom,
 worldTop, worldNear, worldFar; //Coordinates of the viewing volume
+
+btDiscreteDynamicsWorld* dynamicsWorld;
+btRigidBody* ballRigidBody;
+btTransform ballTransformation;
 
 extern int numOfLines; //Number of lines in the input file
 extern int numOfData; //Number of data in file

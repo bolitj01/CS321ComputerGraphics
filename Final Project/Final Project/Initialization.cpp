@@ -10,6 +10,20 @@ void initWindow(int &argc, char **argv) {
 	glutCreateWindow("Soccer Simulator");
 }
 
+//Set up the dynamics world based on bullet physics
+void initializePhysicsWorld() {
+	btBroadphaseInterface* broadphase = new btDbvtBroadphase();
+
+	btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
+	btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
+
+	btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
+
+	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
+
+	dynamicsWorld->setGravity(btVector3(0, -9.8f, 0));
+}
+
 void initializeViewingVolume() {
 	worldLeft = -15;
 	worldRight = 15;

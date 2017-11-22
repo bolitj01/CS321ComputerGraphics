@@ -7,6 +7,8 @@
 
 void initWindow(int &argc, char **argv);
 
+void initializePhysicsWorld();
+
 void initializeViewingVolume();
 void initializeCamera();
 void initializeBallGoal();
