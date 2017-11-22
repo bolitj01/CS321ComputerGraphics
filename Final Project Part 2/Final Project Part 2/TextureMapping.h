@@ -4,5 +4,6 @@
 
 void readImage(char* fileName);
 void initialiseTextures(char* fileName);
+void bindTextures();
 
 #endif

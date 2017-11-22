@@ -69,5 +69,6 @@ extern int ImgWidth, ImgHeight;
 typedef GLubyte Pixel[3];
 extern Pixel *Image;
 extern char *materialType;
+extern GLuint texName[4];
 
 #endif

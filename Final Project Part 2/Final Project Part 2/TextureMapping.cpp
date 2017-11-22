@@ -105,3 +105,19 @@ void initialiseTextures(char* fileName)
 	/*this enables texturing*/
 	glEnable(GL_TEXTURE_2D);
 }
+
+void bindTextures() {
+	glGenTextures(3, texName);
+	glBindTexture(GL_TEXTURE_2D, texName[0]);
+	initialiseTextures("main.ppm");
+
+	glBindTexture(GL_TEXTURE_2D, texName[1]);
+	initialiseTextures("ground.ppm");
+
+	glBindTexture(GL_TEXTURE_2D, texName[2]);
+	initialiseTextures("field.ppm");
+
+	glBindTexture(GL_TEXTURE_2D, texName[3]);
+	initialiseTextures("soccerMap3.ppm");
+
+}

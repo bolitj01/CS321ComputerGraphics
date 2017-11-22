@@ -35,7 +35,7 @@ void display(void) {
 	//STADIUM
 	glTranslatef(500, 0, 0);
 	glPushMatrix();
-	glScalef(50, 50, 50);
+	glScalef(100, 100, 100);
 	glRotatef(30, 0, 0, 1);
 	drawFileS();
 	glPopMatrix();

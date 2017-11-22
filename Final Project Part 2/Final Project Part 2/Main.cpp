@@ -55,6 +55,7 @@ int ImgWidth, ImgHeight;
 typedef GLubyte Pixel[3];
 Pixel *Image;
 char *materialType;
+GLuint texName[4];
 
 void setup() {
 	//Reads data for models into arrays 
@@ -78,7 +79,7 @@ void main(int argc, char** argv)
 	setup();
 	initWindow(argc, argv);
 	setupLight();
-	//initialiseTextures("soccerMap3.ppm");
+	bindTextures();
 	initializeViewingVolume();
 	glutDisplayFunc(display);
 	glutMouseFunc(mouseClick);

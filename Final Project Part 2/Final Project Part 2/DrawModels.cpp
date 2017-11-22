@@ -120,7 +120,7 @@ void createArrayS() {
 	normVecArrStadium = (float *)calloc(numOfVN * 3, sizeof(float));
 	textVecArrStadium = (float *)calloc(numOfVT * 2, sizeof(float));
 	matArrStadium = (char *)calloc(numOfMat, sizeof(char));
-	faceArrStadium = (int *)calloc(numOfFS * 9, sizeof(int));
+	faceArrStadium = (int *)calloc(numOfFS * 9 + 18, sizeof(int));//15 is number of tags
 	// read the first word of the line
 	int res = fscanf(fp, "%s", lineHeader);
 	while (res != EOF) {
@@ -130,10 +130,13 @@ void createArrayS() {
 			materialType = strchr(lineHeader, ' ');
 			materialType++;
 			matArrStadium[countm] = materialType[0];
-			printf("TEST: %s, %c\n", materialType, matArrStadium[countm]);
 			countm++;
+			faceArrStadium[countf] = -999;//Special char, signals new section
+			countf++; //Division between face sections
+			//printf("faceArrStadium: %d//%d", faceArrStadium[countf - 2], faceArrStadium[countf - 1]);
+			printf("%d", countm);
 		}
-		if (strcmp(lineHeader, "v") == 0) {
+		else if (strcmp(lineHeader, "v") == 0) {
 			fscanf(fp, "%f %f %f\n", &verticeArrStadium[countv], &verticeArrStadium[countv + 1], &verticeArrStadium[countv + 2]);
 			countv += 3;
 		}
@@ -206,7 +209,7 @@ void drawFileG() {
 }
 
 void drawFileB() {
-	initialiseTextures("soccerMap3.ppm");
+	glBindTexture(GL_TEXTURE_2D, texName[3]);
 	int i = 0;
 	int vertexNum = 0;
 	int vertexNormNum = 0;
@@ -279,110 +282,587 @@ void drawFileB() {
 }
 
 void drawFileS() {
-	//initialiseTextures("field.ppm");
 	int i = 0;
+	int stabilize = 0;
 	int vertexNum = 0;
 	int vertexNormNum = 0;
 	int vertexTexNum = 0;
 
-	initialiseTextures("field.ppm");
+	//THIS VERSION DOESN'T CHANGE TEXTURES
+	/*glBindTexture(GL_TEXTURE_2D, texName[1]);
 	glBegin(GL_TRIANGLES);
-	for (i = 130600; i < numOfFS; i++) {//Grass
-		glColor3f(1.0, 1.0, 1.0);
-		vertexNormNum = faceArrStadium[i * 9 + 2];
-		verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
-		verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
-		verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
-		verticeNorm[3] = 1;
-		glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
-		vertexTexNum = faceArrStadium[i * 9 + 1];
-		glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
-		vertexNum = faceArrStadium[i * 9];//First vertex
-		vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
-		vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
-		vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
-		vertice[3] = 1;
-		glVertex3f(vertice[0], vertice[1], vertice[2]);
+	for (i = 0; i < numOfFS; i++) {//Grass
+		if (faceArrStadium[i * 9 + stabilize] == -999) {
+			stabilize++;
+			glEnd();//New section
+			glBegin(GL_TRIANGLES);
+		}
+		if (stabilize == 6) {
+			glBindTexture(GL_TEXTURE_2D, texName[0]);
+		}
+		if (stabilize == 7) {
+		glBindTexture(GL_TEXTURE_2D, texName[1]);
+		}
+		if (stabilize == 10) {
+			glBindTexture(GL_TEXTURE_2D, texName[0]);
+		}
+		if (stabilize == 11){
+			glBindTexture(GL_TEXTURE_2D, texName[2]);
+		}
 
-		vertexNormNum = faceArrStadium[i * 9 + 5];
-		verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
-		verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
-		verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
-		verticeNorm[3] = 1;
-		glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
-		vertexTexNum = faceArrStadium[i * 9 + 4];
-		glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
-		vertexNum = faceArrStadium[i * 9 + 3];//Second vertex
-		vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
-		vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
-		vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
-		vertice[3] = 1;
-		glVertex3f(vertice[0], vertice[1], vertice[2]);
+		if (stabilize == 15){
+			//DO NOTHING
+		}
+		else if ((stabilize == 2) || (stabilize == 4) || (stabilize == 7) || (stabilize == 9) || (stabilize == 11) || (stabilize == 12) || (stabilize == 14) || (stabilize == 16)) {
+			glColor3f(1.0, 1.0, 1.0);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 1];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize];//First vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
 
-		vertexNormNum = faceArrStadium[i * 9 + 8];
-		verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
-		verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
-		verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
-		verticeNorm[3] = 1;
-		glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
-		vertexTexNum = faceArrStadium[i * 9 + 7];
-		glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
-		vertexNum = faceArrStadium[i * 9 + 6];//Third vertex
-		vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
-		vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
-		vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
-		vertice[3] = 1;
-		glVertex3f(vertice[0], vertice[1], vertice[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 3];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 2];//Second vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 5];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 4];//Third vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+		}
+		else {
+			glColor3f(1.0, 1.0, 1.0);
+			vertexNormNum = faceArrStadium[i * 9 + stabilize + 2];
+			verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+			verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+			verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+			verticeNorm[3] = 1;
+			glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 1];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize];//First vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexNormNum = faceArrStadium[i * 9 + stabilize + 5];
+			verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+			verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+			verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+			verticeNorm[3] = 1;
+			glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 4];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 3];//Second vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexNormNum = faceArrStadium[i * 9 + stabilize + 8];
+			verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+			verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+			verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+			verticeNorm[3] = 1;
+			glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 7];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 6];//Third vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+		}
+	}
+	glEnd();*/
+
+
+	glBindTexture(GL_TEXTURE_2D, texName[1]);
+	glBegin(GL_TRIANGLES);
+	i = 0;
+	while(stabilize < 5){//Brown Accent Pieces
+		if (faceArrStadium[i * 9 + stabilize] == -999) {
+			stabilize++;
+			glEnd();//New section
+			glBegin(GL_TRIANGLES);
+		}
+		if (stabilize == 1) {
+			//glBindTexture(GL_TEXTURE_2D, texName[2]);
+		}
+		if (stabilize == 15) {
+			//Do nothing
+		}
+		else if ((stabilize == 2) || (stabilize == 4) || (stabilize == 7) || (stabilize == 9) || (stabilize == 11) || (stabilize == 12) || (stabilize == 14) || (stabilize == 16)) {
+			glColor3f(1.0, 1.0, 1.0);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 1];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize];//First vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 3];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 2];//Second vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 5];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 4];//Third vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+		}
+		else {
+			glColor3f(1.0, 1.0, 1.0);
+			vertexNormNum = faceArrStadium[i * 9 + stabilize + 2];
+			verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+			verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+			verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+			verticeNorm[3] = 1;
+			glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 1];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize];//First vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexNormNum = faceArrStadium[i * 9 + stabilize + 5];
+			verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+			verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+			verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+			verticeNorm[3] = 1;
+			glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 4];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 3];//Second vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexNormNum = faceArrStadium[i * 9 + stabilize + 8];
+			verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+			verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+			verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+			verticeNorm[3] = 1;
+			glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 7];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 6];//Third vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+		}
+		i++;
+		}
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D, texName[0]);
+	glBegin(GL_TRIANGLES);
+	while (stabilize < 6) {//Stand seats
+		if (faceArrStadium[i * 9 + stabilize] == -999) {
+			stabilize++;
+			glEnd();//New section
+			glBegin(GL_TRIANGLES);
+		}
+		if (stabilize == 1) {
+			//glBindTexture(GL_TEXTURE_2D, texName[2]);
+		}
+		if (stabilize == 15) {
+			//Do nothing
+		}
+		else if ((stabilize == 2) || (stabilize == 4) || (stabilize == 7) || (stabilize == 9) || (stabilize == 11) || (stabilize == 12) || (stabilize == 14) || (stabilize == 16)) {
+			glColor3f(1.0, 1.0, 1.0);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 1];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize];//First vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 3];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 2];//Second vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 5];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 4];//Third vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+		}
+		else {
+			glColor3f(1.0, 1.0, 1.0);
+			vertexNormNum = faceArrStadium[i * 9 + stabilize + 2];
+			verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+			verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+			verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+			verticeNorm[3] = 1;
+			glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 1];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize];//First vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexNormNum = faceArrStadium[i * 9 + stabilize + 5];
+			verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+			verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+			verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+			verticeNorm[3] = 1;
+			glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 4];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 3];//Second vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexNormNum = faceArrStadium[i * 9 + stabilize + 8];
+			verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+			verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+			verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+			verticeNorm[3] = 1;
+			glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 7];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 6];//Third vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+		}
+		i++;
 	}
 	glEnd();
-	initialiseTextures("main.ppm");
+
+	glBindTexture(GL_TEXTURE_2D, texName[1]);
 	glBegin(GL_TRIANGLES);
-	for (i = 0; i < 130600; i++) {//Stand seats
-		glColor3f(1.0, 1.0, 1.0);
-		vertexNormNum = faceArrStadium[i * 9 + 2];
-		verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
-		verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
-		verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
-		verticeNorm[3] = 1;
-		glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
-		vertexTexNum = faceArrStadium[i * 9 + 1];
-		glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
-		vertexNum = faceArrStadium[i * 9];//First vertex
-		vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
-		vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
-		vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
-		vertice[3] = 1;
-		glVertex3f(vertice[0], vertice[1], vertice[2]);
+	while (stabilize < 10) {//Stand seats
+		if (faceArrStadium[i * 9 + stabilize] == -999) {
+			stabilize++;
+			glEnd();//New section
+			glBegin(GL_TRIANGLES);
+		}
+		if (stabilize == 1) {
+			//glBindTexture(GL_TEXTURE_2D, texName[2]);
+		}
+		if (stabilize == 15) {
+			//Do nothing
+		}
+		else if ((stabilize == 2) || (stabilize == 4) || (stabilize == 7) || (stabilize == 9) || (stabilize == 11) || (stabilize == 12) || (stabilize == 14) || (stabilize == 16)) {
+			glColor3f(1.0, 1.0, 1.0);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 1];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize];//First vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
 
-		vertexNormNum = faceArrStadium[i * 9 + 5];
-		verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
-		verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
-		verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
-		verticeNorm[3] = 1;
-		glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
-		vertexTexNum = faceArrStadium[i * 9 + 4];
-		glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
-		vertexNum = faceArrStadium[i * 9 + 3];//Second vertex
-		vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
-		vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
-		vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
-		vertice[3] = 1;
-		glVertex3f(vertice[0], vertice[1], vertice[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 3];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 2];//Second vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
 
-		vertexNormNum = faceArrStadium[i * 9 + 8];
-		verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
-		verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
-		verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
-		verticeNorm[3] = 1;
-		glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
-		vertexTexNum = faceArrStadium[i * 9 + 7];
-		glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
-		vertexNum = faceArrStadium[i * 9 + 6];//Third vertex
-		vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
-		vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
-		vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
-		vertice[3] = 1;
-		glVertex3f(vertice[0], vertice[1], vertice[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 5];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 4];//Third vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+		}
+		else {
+			glColor3f(1.0, 1.0, 1.0);
+			vertexNormNum = faceArrStadium[i * 9 + stabilize + 2];
+			verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+			verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+			verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+			verticeNorm[3] = 1;
+			glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 1];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize];//First vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexNormNum = faceArrStadium[i * 9 + stabilize + 5];
+			verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+			verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+			verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+			verticeNorm[3] = 1;
+			glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 4];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 3];//Second vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexNormNum = faceArrStadium[i * 9 + stabilize + 8];
+			verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+			verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+			verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+			verticeNorm[3] = 1;
+			glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 7];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 6];//Third vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+		}
+		i++;
+	}
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D, texName[0]);
+	glBegin(GL_TRIANGLES);
+	while (stabilize < 11) {//Stand seats
+		if (faceArrStadium[i * 9 + stabilize] == -999) {
+			stabilize++;
+			glEnd();//New section
+			glBegin(GL_TRIANGLES);
+		}
+		if (stabilize == 1) {
+			//glBindTexture(GL_TEXTURE_2D, texName[2]);
+		}
+		if (stabilize == 15) {
+			//Do nothing
+		}
+		else if ((stabilize == 2) || (stabilize == 4) || (stabilize == 7) || (stabilize == 9) || (stabilize == 11) || (stabilize == 12) || (stabilize == 14) || (stabilize == 16)) {
+			glColor3f(1.0, 1.0, 1.0);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 1];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize];//First vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 3];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 2];//Second vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 5];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 4];//Third vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+		}
+		else {
+			glColor3f(1.0, 1.0, 1.0);
+			vertexNormNum = faceArrStadium[i * 9 + stabilize + 2];
+			verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+			verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+			verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+			verticeNorm[3] = 1;
+			glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 1];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize];//First vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexNormNum = faceArrStadium[i * 9 + stabilize + 5];
+			verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+			verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+			verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+			verticeNorm[3] = 1;
+			glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 4];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 3];//Second vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexNormNum = faceArrStadium[i * 9 + stabilize + 8];
+			verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+			verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+			verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+			verticeNorm[3] = 1;
+			glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 7];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 6];//Third vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+		}
+		i++;
+	}
+	glEnd();
+
+
+	glBindTexture(GL_TEXTURE_2D, texName[2]);
+	glBegin(GL_TRIANGLES);
+	while (stabilize < 15) {//Field
+		if (faceArrStadium[i * 9 + stabilize] == -999) {
+			stabilize++;
+			glEnd();//New section
+			glBegin(GL_TRIANGLES);
+		}
+		/*if (stabilize == 1) {
+			//glBindTexture(GL_TEXTURE_2D, texName[2]);
+		}*/
+		/*if (stabilize == 15) {
+			printf("NTREVOU");
+			//Do nothing
+		}*/
+		else if ((stabilize == 2) || (stabilize == 4) || (stabilize == 7) || (stabilize == 9) || (stabilize == 11) || (stabilize == 12) || (stabilize == 14) || (stabilize == 16)) {
+			glColor3f(1.0, 1.0, 1.0);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 1];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize];//First vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 3];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 2];//Second vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 5];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 4];//Third vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+		}
+		else {
+			glColor3f(1.0, 1.0, 1.0);
+			vertexNormNum = faceArrStadium[i * 9 + stabilize + 2];
+			verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+			verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+			verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+			verticeNorm[3] = 1;
+			glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 1];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize];//First vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexNormNum = faceArrStadium[i * 9 + stabilize + 5];
+			verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+			verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+			verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+			verticeNorm[3] = 1;
+			glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 4];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 3];//Second vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+
+			vertexNormNum = faceArrStadium[i * 9 + stabilize + 8];
+			verticeNorm[0] = normVecArrStadium[(vertexNormNum * 3) - 3];
+			verticeNorm[1] = normVecArrStadium[(vertexNormNum * 3) - 2];
+			verticeNorm[2] = normVecArrStadium[(vertexNormNum * 3) - 1];
+			verticeNorm[3] = 1;
+			glNormal3f(verticeNorm[0], verticeNorm[1], verticeNorm[2]);
+			vertexTexNum = faceArrStadium[i * 9 + stabilize + 7];
+			glTexCoord2f(textVecArrStadium[(vertexTexNum * 2) - 2], textVecArrStadium[(vertexTexNum * 2) - 1]);
+			vertexNum = faceArrStadium[i * 9 + stabilize + 6];//Third vertex
+			vertice[0] = verticeArrStadium[(vertexNum * 3) - 3];
+			vertice[1] = verticeArrStadium[(vertexNum * 3) - 2];
+			vertice[2] = verticeArrStadium[(vertexNum * 3) - 1];
+			vertice[3] = 1;
+			glVertex3f(vertice[0], vertice[1], vertice[2]);
+		}
+		i++;
 	}
 	glEnd();
 }
