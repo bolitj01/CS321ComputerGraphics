@@ -27,7 +27,20 @@ void setupLight() {
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, diffuseLight);
+	
+
+	/*glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuseLight1);
+	//glLightfv(GL_LIGHT1, GL_SPECULAR, specular_light);
+	//glLoadIdentity();
+	glLightfv(GL_LIGHT1, GL_POSITION, lightPosition1);
+	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 10);
+	glLoadIdentity();
+	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spotDirection1);
+	glLighti(GL_LIGHT1, GL_SPOT_EXPONENT, 0);*/
+	
+	
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
+	//glEnable(GL_LIGHT1);
 }

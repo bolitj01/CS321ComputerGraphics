@@ -19,6 +19,7 @@ extern int numOfVN;//Number of normal vectors in the file
 extern int numOfVT;//Number of texture vectors in the file
 extern int numOfFG;//Number of faces in goal file
 extern int numOfFB;//Number of faces in ball file
+extern int numOfFL;//Number of faces in lamp file
 extern int numOfFS;//Number of faces in stadium file
 extern int numOfMat;
 
@@ -51,6 +52,12 @@ extern float *normVecArrBall;
 extern float *textVecArrBall;
 extern int *faceArrBall;
 
+//Data for lamp object
+extern float *verticeArrLamp;
+extern float *normVecArrLamp;
+extern float *textVecArrLamp;
+extern int *faceArrLamp;
+
 //Data for stadium object
 extern float *verticeArrStadium;
 extern float *normVecArrStadium;
@@ -63,12 +70,18 @@ extern int currObj; //Object file being read, 0 = ball, 1 = goal
 //Lighting
 extern GLfloat ambientLight[];
 extern GLfloat diffuseLight[];
+//Field Light 1
+extern GLfloat diffuseLight1[];
+extern GLfloat lightPosition1[];
+extern GLfloat spotDirection1[];
+
+
 
 //Texture Mapping
 extern int ImgWidth, ImgHeight;
 typedef GLubyte Pixel[3];
 extern Pixel *Image;
 extern char *materialType;
-extern GLuint texName[4];
+extern GLuint texName[5];
 
 #endif

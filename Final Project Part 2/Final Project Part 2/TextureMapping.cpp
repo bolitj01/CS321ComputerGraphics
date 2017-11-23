@@ -98,7 +98,7 @@ void initialiseTextures(char* fileName)
 	performs a linear interpolation on the 4 surrounding texels*/
 
 	/*GL_DECAL - this says overwrite pixel with texture colour*/
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	/*an alternative is GL_MODULATE which modulates the lighting
 	by the texel value by multiplication*/
 
@@ -107,7 +107,7 @@ void initialiseTextures(char* fileName)
 }
 
 void bindTextures() {
-	glGenTextures(3, texName);
+	glGenTextures(5, texName);
 	glBindTexture(GL_TEXTURE_2D, texName[0]);
 	initialiseTextures("main.ppm");
 
@@ -119,5 +119,8 @@ void bindTextures() {
 
 	glBindTexture(GL_TEXTURE_2D, texName[3]);
 	initialiseTextures("soccerMap3.ppm");
+
+	glBindTexture(GL_TEXTURE_2D, texName[4]);
+	initialiseTextures("lampTexture.ppm");
 
 }

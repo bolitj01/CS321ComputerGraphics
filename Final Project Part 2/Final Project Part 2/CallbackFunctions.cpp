@@ -11,6 +11,7 @@ void display(void) {
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
+	//glOrtho(-10, 10, -10, 10, -10, 10);
 	glFrustum(worldLeft, worldRight, worldBottom, worldTop, worldNear, worldFar);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -24,11 +25,9 @@ void display(void) {
 	glShadeModel(GL_SMOOTH);
 
 
-	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, diffuseLight);
-	glEnable(GL_LIGHT0);
 	
+
+
 
 	//drawFileG();
 
@@ -39,6 +38,33 @@ void display(void) {
 	glRotatef(30, 0, 0, 1);
 	drawFileS();
 	glPopMatrix();
+
+
+	glPushMatrix();
+	glTranslatef(0, 0, 150);
+	glScalef(7, 7, 7);
+	drawFileL();//Right Lamp 1 by half
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(0, 0, -150);
+	glScalef(7, 7, 7);
+	drawFileL();//Left Lamp 2 by half
+	glPopMatrix();
+
+
+	glPushMatrix();
+	glTranslatef(150, 100, 150);
+	glScalef(7, 7, 7);
+	drawFileL();//Right Lamp 3 by goal
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(150, 100, -150);
+	glScalef(7, 7, 7);
+	drawFileL();//Left Lamp 4 by goal
+	glPopMatrix();
+
 
 	//BALL
 	//drawFileB();

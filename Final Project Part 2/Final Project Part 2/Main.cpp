@@ -20,6 +20,7 @@ int numOfVN;//Number of normal vectors in the file
 int numOfVT;
 int numOfFG;//Number of faces in goal file
 int numOfFB;//Number of faces in ball file
+int numOfFL;//Number of faces in lamp file
 int numOfFS;//Number of faces in stadium file
 int numOfMat;
 int * arrayPtr; //Pointer to dynamically allotted array
@@ -41,6 +42,10 @@ float *verticeArrBall;
 float *normVecArrBall;
 float *textVecArrBall;
 int *faceArrBall;
+float *verticeArrLamp;
+float *normVecArrLamp;
+float *textVecArrLamp;
+int *faceArrLamp;
 float *verticeArrStadium;
 float *normVecArrStadium;
 float *textVecArrStadium;
@@ -49,13 +54,19 @@ int *faceArrStadium;
 int currObj = 0; //Object file being read, 0 = ball, 1 = goal
 float worldLeft, worldRight, worldBottom,
 worldTop, worldNear, worldFar;
-GLfloat ambientLight[] = { 0.3f, 0.3f, 0.3f, 1.0f };
+//Lighting
+GLfloat ambientLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 GLfloat  diffuseLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+//Field Ligth 1
+GLfloat diffuseLight1[] = { 1.0, .2, .6, 1.0 };
+extern GLfloat lightPosition1[] = { 0, 100, 0, 1 };
+extern GLfloat spotDirection1[] = {0, 0, 0};
+//Texture Mapping
 int ImgWidth, ImgHeight;
 typedef GLubyte Pixel[3];
 Pixel *Image;
 char *materialType;
-GLuint texName[4];
+GLuint texName[5];
 
 void setup() {
 	//Reads data for models into arrays 
@@ -72,6 +83,12 @@ void setup() {
 	fp = fopen("stadium2.obj", "r");
 	countLines();
 	createArrayS();
+	currObj = 3;
+
+	fp = fopen("lamp2.obj", "r");
+	countLines();
+	createLampData();
+	printf("REACHED");
 }
 
 void main(int argc, char** argv)
@@ -80,6 +97,7 @@ void main(int argc, char** argv)
 	initWindow(argc, argv);
 	setupLight();
 	bindTextures();
+	//printf("HELLO");
 	initializeViewingVolume();
 	glutDisplayFunc(display);
 	glutMouseFunc(mouseClick);
