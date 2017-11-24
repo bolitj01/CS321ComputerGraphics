@@ -5,9 +5,10 @@ void display(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	glMatrixMode(GL_MODELVIEW);
-
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_LIGHTING);
+	glLoadIdentity();
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, diffuseLight);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -23,10 +24,6 @@ void display(void) {
 	glTranslatef(xMove, yMove, zMove);
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glShadeModel(GL_SMOOTH);
-
-
-	
-
 
 
 	//drawFileG();

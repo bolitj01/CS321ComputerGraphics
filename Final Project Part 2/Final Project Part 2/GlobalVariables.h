@@ -70,6 +70,8 @@ extern int currObj; //Object file being read, 0 = ball, 1 = goal
 //Lighting
 extern GLfloat ambientLight[];
 extern GLfloat diffuseLight[];
+extern GLfloat emissiveLight[];
+extern GLfloat specularLight[];
 //Field Light 1
 extern GLfloat diffuseLight1[];
 extern GLfloat lightPosition1[];
