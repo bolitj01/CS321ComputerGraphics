@@ -76,7 +76,8 @@ extern GLfloat specularLight[];
 extern GLfloat diffuseLight1[];
 extern GLfloat lightPosition1[];
 extern GLfloat spotDirection1[];
-
+extern GLfloat cutoff;
+extern GLint exponent;
 
 
 //Texture Mapping

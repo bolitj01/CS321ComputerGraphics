@@ -9,6 +9,16 @@ void display(void) {
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, diffuseLight);
+	
+
+	glLoadIdentity();
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuseLight1);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, specularLight);
+	glLightfv(GL_LIGHT1, GL_POSITION, lightPosition1);
+	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, cutoff);
+	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spotDirection1);
+	glLighti(GL_LIGHT1, GL_SPOT_EXPONENT, exponent);
+
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -108,6 +118,18 @@ void keyPress(unsigned char key, int x, int y)
 	else if ((key == 'R') || (key == 'r')) {
 		//Move forward along X axis
 		xMove += 40;
+	}
+	else if (key == 'C'){
+		cutoff += 1.0;
+	}
+	else if (key == 'c') {
+		cutoff -= 1.0;
+	}
+	else if (key == 'E') {
+		exponent += 1.0;
+	}
+	else if (key == 'e') {
+		exponent -= 1.0;
 	}
 	else if ((key == 'F') || (key == 'f')) {
 		//Move forward along Z axis

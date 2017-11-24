@@ -60,9 +60,11 @@ GLfloat  diffuseLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 GLfloat emissiveLight[] = { 0.5f, 0.5f, 0.5f, 1.0f };
 GLfloat specularLight[] = { 0.5f, 0.5f, 0.5f, 1.0f };
 //Field Ligth 1
-GLfloat diffuseLight1[] = { 1.0, .2, .6, 1.0 };
-extern GLfloat lightPosition1[] = { 100, 0, 0, 1 };
-extern GLfloat spotDirection1[] = {0, 0, 0};
+GLfloat diffuseLight1[] = { 0.0, 1.0, 0.0, 1.0 };
+GLfloat lightPosition1[] = { 300, 0, 0, 1 };
+GLfloat spotDirection1[] = {0, 0, 0};
+GLfloat cutoff = 10.0;
+GLint exponent = 0;
 //Texture Mapping
 int ImgWidth, ImgHeight;
 typedef GLubyte Pixel[3];
