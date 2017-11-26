@@ -10,12 +10,19 @@ Soccer game final project for CS321 Intro to Computer Graphics
 Fall 2017
 */
 
+float screenWidth, screenHeight;
 
 FILE *fp;
 char fileName[50]; //Holds the file name
 
 float worldLeft, worldRight, worldBottom,
 worldTop, worldNear, worldFar;
+
+btDiscreteDynamicsWorld* dynamicsWorld;
+btRigidBody* ballRigidBody;
+btTransform ballTransformation;
+float worldScaleToBullet;
+btVector3 goalMesh[8];
 
 int numOfLines; //Number of lines in the input file
 int numOfData; //Number of data in file
@@ -42,12 +49,21 @@ double *normVecArrGoal;
 int *faceArrGoal;
 double goalZLocation;
 double* goalBottomCenter;
+float goalWidth;
+float goalHeight;
+float goalDepth;
+float goalScale;
 
 double *verticeArrBall;
 double *normVecArrBall;
 int *faceArrBall;
 double* ballBottomCenter;
 float ballRadius;
+float ballStartingHeightOffGround;
+btVector3 ballVelocity;
+float ballKickUpAngle;
+float ballKickTurnAngle;
+float ballRotation;
 
 double *verticeArrStadium;
 double *normVecArrStadium;
@@ -55,18 +71,22 @@ int *faceArrStadium;
 
 int currObj = 0; //Object file being read, 0 = ball, 1 = goal
 
+float kickLineStartX, kickLineStartY, kickLineEndX, kickLineEndY;
+float kickStrengthY, kickStrengthX;
+bool ballKicked = false;
+
 void setup() {
 	//Reads data for models into arrays 
 	fp = fopen("soccerball.obj", "r");
 	countLines();
 	createBallData();
-	ballBottomCenter = getObjectBottomCenter(numOfV, verticeArrBall);
+	ballBottomCenter = getObjectParameters(numOfV, verticeArrBall);
 	currObj = 1;
 
 	fp = fopen("soccergoal.obj", "r");
 	countLines();
 	createGoalData();
-	goalBottomCenter = getObjectBottomCenter(numOfV, verticeArrGoal);
+	goalBottomCenter = getObjectParameters(numOfV, verticeArrGoal);
 	currObj = 2;
 
 	/*fp = fopen("stadium.obj", "r");
@@ -82,7 +102,7 @@ void setup() {
 
 	initializeViewingVolume();
 	initializeCamera();
-	initializeBallGoal();
+	initializePhysicsWorld();
 }
 
 void main(int argc, char** argv)
@@ -92,9 +112,11 @@ void main(int argc, char** argv)
 	initWindow(argc, argv);
 
 	glutDisplayFunc(display);
+	glutIdleFunc(idleWorldStep);
 	glutMouseFunc(mouseClick);
 	glutMotionFunc(mouseCameraRotation);
 	glutKeyboardFunc(keyPress);
+	glutSpecialFunc(specialKeyPress);
 	glutMainLoop();
 
 

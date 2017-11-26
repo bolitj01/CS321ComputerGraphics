@@ -51,3 +51,11 @@ void updateCameraUpVector() {
 	delete result;
 	
 }
+
+//Convert screen coordinates to world coordinates
+void screenToWorldCoordinates(int screenX, int screenY, float* worldX, float* worldY) {
+	float screenPercentage = (float)screenX / (float)screenWidth;
+	*worldX = -(screenPercentage * (worldRight * 2) - worldRight);
+	screenPercentage = (float)screenY / (float)screenHeight;
+	*worldY = -(screenPercentage * (worldTop * 2) - worldTop);
+}

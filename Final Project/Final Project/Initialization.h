@@ -11,7 +11,6 @@ void initializePhysicsWorld();
 
 void initializeViewingVolume();
 void initializeCamera();
-void initializeBallGoal();
 
 
 

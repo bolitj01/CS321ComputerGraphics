@@ -207,12 +207,13 @@ void drawFileS() {
 }
 
 //Calculate object's bottom center
-double* getObjectBottomCenter(int vertexCount, double* vertices) {
+double* getObjectParameters(int vertexCount, double* vertices) {
 
 	double* bottomCenter = (double*)calloc(3, sizeof(double));
 
-	float highX = 0, lowX = 0, lowY = 0, highZ = 0, lowZ = 0;
+	float highX = 0, lowX = 0, lowY = 0, highY = 0, highZ = 0, lowZ = 0;
 
+	//Find highs and lows of each dimension
 	for (int i = 0; i < vertexCount; i++) {
 		if (vertices[i * 3] > highX) {
 			highX = vertices[i * 3];
@@ -223,6 +224,9 @@ double* getObjectBottomCenter(int vertexCount, double* vertices) {
 		
 		if (vertices[i * 3 + 1] < lowY) {
 			lowY = vertices[i * 3 + 1];
+		}
+		else if (vertices[i * 3 + 1] > highY) {
+			highY = vertices[i * 3 + 1];
 		}
 
 		if (vertices[i * 3 + 2] > highZ) {
@@ -240,6 +244,12 @@ double* getObjectBottomCenter(int vertexCount, double* vertices) {
 	//Get radius if object is the ball
 	if (currObj == 0) {
 		ballRadius = (highX - lowX) / 2;
+	}
+	//Get width, height, and depth if object is the goal
+	if (currObj == 1) {
+		goalWidth = highX - lowX;
+		goalHeight = highY - lowY;
+		goalDepth = highZ - lowZ;
 	}
 
 	return bottomCenter;

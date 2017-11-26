@@ -7,15 +7,19 @@
 #include <stdio.h>
 #include <btBulletDynamicsCommon.h>
 
+extern float screenWidth, screenHeight;
+
 extern FILE *fp;
 extern char fileName[50]; //Holds the  file name
 
 extern float worldLeft, worldRight, worldBottom,
 worldTop, worldNear, worldFar; //Coordinates of the viewing volume
 
-btDiscreteDynamicsWorld* dynamicsWorld;
-btRigidBody* ballRigidBody;
-btTransform ballTransformation;
+extern btDiscreteDynamicsWorld* dynamicsWorld;
+extern btRigidBody* ballRigidBody;
+extern btTransform ballTransformation;
+extern float worldScaleToBullet;
+extern btVector3 goalMesh[8];
 
 extern int numOfLines; //Number of lines in the input file
 extern int numOfData; //Number of data in file
@@ -45,6 +49,10 @@ extern double *normVecArrGoal;
 extern int *faceArrGoal;
 extern double goalZLocation;
 extern double* goalBottomCenter;
+extern float goalWidth;
+extern float goalHeight;
+extern float goalDepth;
+extern float goalScale;
 
 //Data for ball object
 extern double *verticeArrBall;
@@ -52,6 +60,11 @@ extern double *normVecArrBall;
 extern int *faceArrBall;
 extern double* ballBottomCenter;
 extern float ballRadius;
+extern float ballStartingHeightOffGround;
+extern btVector3 ballVelocity;
+extern float ballKickUpAngle;
+extern float ballKickTurnAngle;
+extern float ballRotation;
 
 //Data for stadium object
 extern double *verticeArrStadium;
@@ -59,6 +72,10 @@ extern double *normVecArrStadium;
 extern int *faceArrStadium;
 
 extern int currObj; //Object file being read, 0 = ball, 1 = goal
+
+extern float kickLineStartX, kickLineStartY, kickLineEndX, kickLineEndY;
+extern float kickStrengthY, kickStrengthX;
+extern bool ballKicked;
 
 
 

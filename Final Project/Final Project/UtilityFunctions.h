@@ -7,6 +7,7 @@
 void normalizeVector(float* vector);
 float* vectorCrossProduct(float* vector1, float* vector2);
 void updateCameraUpVector();
+void screenToWorldCoordinates(int screenX, int screenY, float* worldX, float* worldY);
 
 #endif // !UTILITYFUNCTIONS_H
 

@@ -98,6 +98,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>C:\Users\Thomas Bolinger\Libraries\bullet-2.82-r2704\bullet-2.82-r2704\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,6 +132,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>C:\Users\Thomas Bolinger\Libraries\bullet-2.82-r2704\bullet-2.82-r2704\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -187,6 +189,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="freeglut.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Libraries\bullet-2.82-r2704\bullet-2.82-r2704\build\vs2010\BulletCollision.vcxproj">
+      <Project>{ff379e78-36a8-ee49-8510-5b733d15f81f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\bullet-2.82-r2704\bullet-2.82-r2704\build\vs2010\BulletDynamics.vcxproj">
+      <Project>{3eed29d6-3e07-a541-8e7f-ca8cf8f62b9e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\bullet-2.82-r2704\bullet-2.82-r2704\build\vs2010\LinearMath.vcxproj">
+      <Project>{c1851171-5513-284f-a9a5-241f4923a4ce}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
