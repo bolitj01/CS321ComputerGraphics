@@ -107,20 +107,20 @@ void initialiseTextures(char* fileName)
 }
 
 void bindTextures() {
-	glGenTextures(5, texName);
-	glBindTexture(GL_TEXTURE_2D, texName[0]);
+	glGenTextures(1, texName);
+	/*glBindTexture(GL_TEXTURE_2D, texName[0]);
 	initialiseTextures("main.ppm");
 
 	glBindTexture(GL_TEXTURE_2D, texName[1]);
 	initialiseTextures("ground.ppm");
 
 	glBindTexture(GL_TEXTURE_2D, texName[2]);
-	initialiseTextures("field.ppm");
+	initialiseTextures("field.ppm");*/
 
 	glBindTexture(GL_TEXTURE_2D, texName[3]);
 	initialiseTextures("soccerMap3.ppm");
 
-	glBindTexture(GL_TEXTURE_2D, texName[4]);
-	initialiseTextures("lampTexture.ppm");
+	/*glBindTexture(GL_TEXTURE_2D, texName[4]);
+	initialiseTextures("lampTexture.ppm");*/
 
 }

@@ -90,6 +90,96 @@ void createBallData() {
 	}
 }
 
+void createTargetData() {
+	targetScale = 9;
+
+	verticeArrTarget = (float**)calloc(9, sizeof(float*));
+	for (int i = 0; i < 9; i++) {
+		verticeArrTarget[i] = (float*)calloc(3, sizeof(float));
+	}
+	normVecArrTarget = (float**)calloc(9, sizeof(float*));
+	for (int i = 0; i < 9; i++) {
+		normVecArrTarget[i] = (float*)calloc(3, sizeof(float));
+	}
+
+	//Top right back
+	verticeArrTarget[0][0] = 1;
+	verticeArrTarget[0][1] = 1;
+	verticeArrTarget[0][2] = 1;
+	//Top right front
+	verticeArrTarget[1][0] = 1;
+	verticeArrTarget[1][1] = 1;
+	verticeArrTarget[1][2] = -1;
+	//Top left front
+	verticeArrTarget[2][0] = -1;
+	verticeArrTarget[2][1] = 1;
+	verticeArrTarget[2][2] = -1;
+	//Top left back
+	verticeArrTarget[3][0] = -1;
+	verticeArrTarget[3][1] = 1;
+	verticeArrTarget[3][2] = 1;
+
+	//Bottom left back
+	verticeArrTarget[4][0] = -1;
+	verticeArrTarget[4][1] = -1;
+	verticeArrTarget[4][2] = 1;
+	//Bottom left front
+	verticeArrTarget[5][0] = -1;
+	verticeArrTarget[5][1] = -1;
+	verticeArrTarget[5][2] = -1;
+	//Bottom right front
+	verticeArrTarget[6][0] = 1;
+	verticeArrTarget[6][1] = -1;
+	verticeArrTarget[6][2] = -1;
+	//Bottom right back
+	verticeArrTarget[7][0] = 1;
+	verticeArrTarget[7][1] = -1;
+	verticeArrTarget[7][2] = 1;
+
+	//Bottom triangle bottom
+	verticeArrTarget[8][0] = 0;
+	verticeArrTarget[8][1] = -2;
+	verticeArrTarget[8][2] = 0;
+
+	//Up normal
+	normVecArrTarget[0][0] = 0;
+	normVecArrTarget[0][1] = 1;
+	normVecArrTarget[0][2] = 0;
+	//Left normal
+	normVecArrTarget[1][0] = -1;
+	normVecArrTarget[1][1] = 0;
+	normVecArrTarget[1][2] = 0;
+	//Right normal
+	normVecArrTarget[2][0] = 1;
+	normVecArrTarget[2][1] = 0;
+	normVecArrTarget[2][2] = 0;
+	//Front normal
+	normVecArrTarget[3][0] = 0;
+	normVecArrTarget[3][1] = 0;
+	normVecArrTarget[3][2] = -1;
+	//Back normal
+	normVecArrTarget[4][0] = 0;
+	normVecArrTarget[4][1] = 0;
+	normVecArrTarget[4][2] = 1;
+
+	//Down left normal
+	normVecArrTarget[5][0] = -1;
+	normVecArrTarget[5][1] = -1;
+	normVecArrTarget[5][2] = 0;
+	//Down right normal
+	normVecArrTarget[6][0] = 1;
+	normVecArrTarget[6][1] = -1;
+	normVecArrTarget[6][2] = 0;
+	//Down back normal
+	normVecArrTarget[7][0] = 0;
+	normVecArrTarget[7][1] = -1;
+	normVecArrTarget[7][2] = 1;
+	//Down front normal
+	normVecArrTarget[8][0] = 0;
+	normVecArrTarget[8][1] = -1;
+	normVecArrTarget[8][2] = -1;
+}
+
 void createArrayS() {
 	rewind(fp);
 	int countv = 0;
@@ -203,6 +293,116 @@ void drawFileS() {
 		vertex[3] = 1;
 		glVertex3f(vertex[0], vertex[1], vertex[2]);
 	}
+	glEnd();
+}
+
+void drawTarget() {
+	glBegin(GL_TRIANGLES);
+	
+	//Cube top
+	glNormal3fv(normVecArrTarget[0]);
+	glVertex3fv(verticeArrTarget[0]);
+	glNormal3fv(normVecArrTarget[0]);
+	glVertex3fv(verticeArrTarget[1]);
+	glNormal3fv(normVecArrTarget[0]);
+	glVertex3fv(verticeArrTarget[2]);
+
+	glNormal3fv(normVecArrTarget[0]);
+	glVertex3fv(verticeArrTarget[2]);
+	glNormal3fv(normVecArrTarget[0]);
+	glVertex3fv(verticeArrTarget[3]);
+	glNormal3fv(normVecArrTarget[0]);
+	glVertex3fv(verticeArrTarget[0]);
+
+	//Cube left
+	glNormal3fv(normVecArrTarget[1]);
+	glVertex3fv(verticeArrTarget[2]);
+	glNormal3fv(normVecArrTarget[1]);
+	glVertex3fv(verticeArrTarget[3]);
+	glNormal3fv(normVecArrTarget[1]);
+	glVertex3fv(verticeArrTarget[4]);
+
+	glNormal3fv(normVecArrTarget[1]);
+	glVertex3fv(verticeArrTarget[4]);
+	glNormal3fv(normVecArrTarget[1]);
+	glVertex3fv(verticeArrTarget[5]);
+	glNormal3fv(normVecArrTarget[1]);
+	glVertex3fv(verticeArrTarget[2]);
+
+	//Cube right
+	glNormal3fv(normVecArrTarget[2]);
+	glVertex3fv(verticeArrTarget[0]);
+	glNormal3fv(normVecArrTarget[2]);
+	glVertex3fv(verticeArrTarget[1]);
+	glNormal3fv(normVecArrTarget[2]);
+	glVertex3fv(verticeArrTarget[5]);
+
+	glNormal3fv(normVecArrTarget[2]);
+	glVertex3fv(verticeArrTarget[0]);
+	glNormal3fv(normVecArrTarget[2]);
+	glVertex3fv(verticeArrTarget[7]);
+	glNormal3fv(normVecArrTarget[2]);
+	glVertex3fv(verticeArrTarget[5]);
+
+	//Cube front
+	glNormal3fv(normVecArrTarget[3]);
+	glVertex3fv(verticeArrTarget[1]);
+	glNormal3fv(normVecArrTarget[3]);
+	glVertex3fv(verticeArrTarget[2]);
+	glNormal3fv(normVecArrTarget[3]);
+	glVertex3fv(verticeArrTarget[5]);
+
+	glNormal3fv(normVecArrTarget[3]);
+	glVertex3fv(verticeArrTarget[5]);
+	glNormal3fv(normVecArrTarget[3]);
+	glVertex3fv(verticeArrTarget[6]);
+	glNormal3fv(normVecArrTarget[3]);
+	glVertex3fv(verticeArrTarget[1]);
+
+	//Cube back
+	glNormal3fv(normVecArrTarget[4]);
+	glVertex3fv(verticeArrTarget[0]);
+	glNormal3fv(normVecArrTarget[4]);
+	glVertex3fv(verticeArrTarget[3]);
+	glNormal3fv(normVecArrTarget[4]);
+	glVertex3fv(verticeArrTarget[4]);
+
+	glNormal3fv(normVecArrTarget[4]);
+	glVertex3fv(verticeArrTarget[4]);
+	glNormal3fv(normVecArrTarget[4]);
+	glVertex3fv(verticeArrTarget[7]);
+	glNormal3fv(normVecArrTarget[4]);
+	glVertex3fv(verticeArrTarget[0]);
+
+	//Triangle left
+	glNormal3fv(normVecArrTarget[5]);
+	glVertex3fv(verticeArrTarget[4]);
+	glNormal3fv(normVecArrTarget[5]);
+	glVertex3fv(verticeArrTarget[5]);
+	glNormal3fv(normVecArrTarget[5]);
+	glVertex3fv(verticeArrTarget[8]);
+	//Triangle right
+	glNormal3fv(normVecArrTarget[6]);
+	glVertex3fv(verticeArrTarget[6]);
+	glNormal3fv(normVecArrTarget[6]);
+	glVertex3fv(verticeArrTarget[7]);
+	glNormal3fv(normVecArrTarget[6]);
+	glVertex3fv(verticeArrTarget[8]);
+	//Triangle front
+	glNormal3fv(normVecArrTarget[7]);
+	glVertex3fv(verticeArrTarget[5]);
+	glNormal3fv(normVecArrTarget[7]);
+	glVertex3fv(verticeArrTarget[6]);
+	glNormal3fv(normVecArrTarget[7]);
+	glVertex3fv(verticeArrTarget[8]);
+	//Triangle back
+	glNormal3fv(normVecArrTarget[8]);
+	glVertex3fv(verticeArrTarget[4]);
+	glNormal3fv(normVecArrTarget[8]);
+	glVertex3fv(verticeArrTarget[7]);
+	glNormal3fv(normVecArrTarget[8]);
+	glVertex3fv(verticeArrTarget[8]);
+
 	glEnd();
 }
 

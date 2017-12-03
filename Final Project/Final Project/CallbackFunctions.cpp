@@ -26,15 +26,18 @@ void display(void) {
 	glPushMatrix();
 	glColor3f(0, 0, 255);
 	glLineWidth(5);
-	glBegin(GL_LINES);
-	glVertex3f(kickLineStartX, kickLineStartY, 0);
-	glVertex3f(kickLineEndX, kickLineEndY, 0);
-	glEnd();
+	
+	if (!ballKicked) {
+		glBegin(GL_LINES);
+		glVertex3f(kickLineStartX, kickLineStartY, 0);
+		glVertex3f(kickLineEndX, kickLineEndY, 0);
+		glEnd();
+	}
 
 	//Print kick up angle
-	glRasterPos2f(-4, -5); //Make dynamic
+	glRasterPos2f(-4, -5);
 	char kickAngleText[18] = { "Kick up angle:   " };
-	snprintf(kickAngleText + 13, 3, "%d", (int)ballKickUpAngle);
+	snprintf(kickAngleText + 15, 3, "%d", (int)ballKickUpAngle);
 	for (int i = 0; i < 18; i++) {
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, kickAngleText[i]);
 	}
@@ -46,6 +49,16 @@ void display(void) {
 
 	//Scale for bullet
 	glScalef(worldScaleToBullet, worldScaleToBullet, worldScaleToBullet);
+
+	//Draw kick angle
+	glPushMatrix();
+	glRotatef(-ballKickUpAngle, 1, 0, 0);
+	glTranslatef(0, ballRadius, 0);
+	glBegin(GL_LINES);
+	glVertex3f(0, 0, 0);
+	glVertex3f(0, 0, 30);
+	glEnd();
+	glPopMatrix();
 
 	//Draw goal
 	glPushMatrix();
@@ -84,17 +97,27 @@ void display(void) {
 	//glEnd();
 	//glPopMatrix();
 	
+	//For loading physics world transformations of ball and target
+	float transformation[16];
 
 	//Draw ball
 	glPushMatrix();
-	float transformation[16];
 	ballTransformation.getOpenGLMatrix(transformation);
 	glMultMatrixf(transformation);
 	glRotatef(ballRotation, 0, 1, 0);
 	glRotatef(ballKickTurnAngle, 0, 1, 0);
 	drawFileB();
 	glPopMatrix();
-	
+
+	//Draw target
+	glPushMatrix();
+	targetTransformation.getOpenGLMatrix(transformation);
+	glMultMatrixf(transformation);
+	glRotatef(targetRotation, 0, 1, 0);
+	glScalef(targetScale, targetScale, targetScale / 3);
+	drawTarget();
+	glPopMatrix();
+
 	//drawFileS();
 
 	glutSwapBuffers();
@@ -110,15 +133,16 @@ void idleWorldStep() {
 
 		if (velocity[2] > 10) {
 			ballRotation += kickStrengthX * 15;
-			velocity[0] -= kickStrengthX;
+			velocity[0] -= kickStrengthX * 1.3;
 		}
-			
-		
 
 		ballRigidBody->setLinearVelocity(velocity);
 	}
 
 	ballRigidBody->getMotionState()->getWorldTransform(ballTransformation);
+	targetRigidBody->getMotionState()->getWorldTransform(targetTransformation);
+
+	targetRotation = (targetRotation + 1) % 360;
 
 	glutPostRedisplay();
 }
@@ -131,24 +155,26 @@ void mouseClick(int button, int state, int x, int y)
 	//Left click to start dragging ball kick line
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-		screenToWorldCoordinates(x, y, &kickLineStartX, &kickLineStartY);
-		kickLineEndX = kickLineStartX;
-		kickLineEndY = kickLineStartY;
-		glutMotionFunc(mouseDrawKickLine);
+		if (!ballKicked) {
+			screenToWorldCoordinates(x, y, &kickLineStartX, &kickLineStartY);
+			kickLineEndX = kickLineStartX;
+			kickLineEndY = kickLineStartY;
+			glutMotionFunc(mouseDrawKickLine);
+		}
 	}
 	//Kick ball
 	else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
-		//Set ball velocities based on drawn kick line
-		kickStrengthY = (kickLineEndY - kickLineStartY) * 120;
-		kickStrengthX = (kickLineEndX - kickLineStartX) / 8;
-		calculateBallVelocity();
-		ballKicked = true;
-		kickLineStartX = 0;
-		kickLineStartY = 0;
-		kickLineEndX = 0;
-		kickLineEndY = 0;
-
-		
+		if (!ballKicked) {
+			//Set ball velocities based on drawn kick line
+			kickStrengthY = (kickLineEndY - kickLineStartY) * 120;
+			kickStrengthX = (kickLineEndX - kickLineStartX) / 8;
+			calculateBallVelocity();
+			ballKicked = true;
+			kickLineStartX = 0;
+			kickLineStartY = 0;
+			kickLineEndX = 0;
+			kickLineEndY = 0;
+		}
 	}
 	//Right click for camera rotation
 	else if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
@@ -160,7 +186,6 @@ void mouseClick(int button, int state, int x, int y)
 }
 
 void calculateBallVelocity() {
-	float pi = atan(1.0) * 4;
 	float ballTurnFactorZ = cos(ballKickTurnAngle * pi / 180);
 	float ballTurnFactorX = sin(ballKickTurnAngle * pi / 180);
 	float ballUpFactorZ = cos(ballKickUpAngle * pi / 180);
@@ -218,14 +243,14 @@ void keyPress(unsigned char key, int x, int y)
 		//Exits program
 		exit(0);
 	}
-	else if (key == 'k' || key == 'K') {
-		ballRigidBody->getWorldTransform().setIdentity();
-		ballRigidBody->getWorldTransform().setOrigin(btVector3(0, ballRadius, 0));
-		ballRigidBody->clearForces();
-		ballRigidBody->setAngularVelocity(btVector3(0, 0, 0));
-		ballRigidBody->setLinearVelocity(btVector3(0, 0, 0));
-		ballRigidBody->applyTorque(btVector3(0, 10, 0));
-		ballRigidBody->setLinearVelocity(btVector3(0, 0, 200));
+	//Move the target to a new position
+	else if (key == 'n' || key == 'N') {
+		calculateNewTargetPosition();
+		targetRigidBody->getWorldTransform().setIdentity();
+		targetRigidBody->getWorldTransform().setOrigin(targetLocation);
+		targetRigidBody->clearForces();
+		targetRigidBody->setAngularVelocity(btVector3(0, 0, 0));
+		targetRigidBody->setLinearVelocity(btVector3(0, 0, 0));
 	}
 	else if (key == 'r' || key == 'R') {
 		ballRigidBody->getWorldTransform().setIdentity();

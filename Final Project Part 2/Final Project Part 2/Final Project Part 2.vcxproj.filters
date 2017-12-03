@@ -52,5 +52,16 @@
     <None Include="freeglut.dll">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="field.ppm" />
+    <None Include="ground.ppm" />
+    <None Include="lamptexture.ppm" />
+    <None Include="main.ppm" />
+    <None Include="soccerMap3.ppm" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="lamp2.obj" />
+    <Text Include="soccer ball2.obj" />
+    <Text Include="soccergoal.obj" />
+    <Text Include="stadium2.obj" />
   </ItemGroup>
 </Project>

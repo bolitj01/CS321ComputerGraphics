@@ -148,6 +148,32 @@ void initializePhysicsWorld() {
 	dynamicsWorld->addRigidBody(goalTopRigidBody);
 	dynamicsWorld->addRigidBody(goalBackRigidBody);
 
+	//Create target hull
+	btConvexHullShape* targetHull = new btConvexHullShape();
+	for (int i = 0; i < 9; i++) {
+		targetHull->addPoint(btVector3(verticeArrTarget[i][0], verticeArrTarget[i][1], verticeArrTarget[i][2]));
+	}
+
+	targetHull->setMargin(collisionMargin);
+	targetHull->setLocalScaling(btVector3(targetScale, targetScale, targetScale / 3));
+	calculateNewTargetPosition();
+
+	btDefaultMotionState* targetMotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), targetLocation));
+	btScalar targetMass = .001;
+	btVector3 targetInertia(0, 0, 0);
+	targetHull->calculateLocalInertia(targetMass, targetInertia);
+	btRigidBody::btRigidBodyConstructionInfo targetRigidBodyCI(targetMass, targetMotionState, targetHull, targetInertia);
+	targetRigidBody = new btRigidBody(targetRigidBodyCI);
+
+	//Need to change target forces in real time
+	targetRigidBody->setActivationState(DISABLE_DEACTIVATION);
+
+	dynamicsWorld->addRigidBody(targetRigidBody);
+	dynamicsWorld->updateSingleAabb(targetRigidBody); //Maybe need targetHull instead
+
+	//Set zero gravity for target
+	targetRigidBody->setGravity(btVector3(0, 0, 0));
+
 	//Create ball 
 	btCollisionShape* ballShape = new btSphereShape(1);
 	ballShape->setMargin(collisionMargin);

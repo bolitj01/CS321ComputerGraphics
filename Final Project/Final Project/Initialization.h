@@ -2,6 +2,7 @@
 #define INITIALIZATION_H
 
 #include "GlobalVariables.h"
+#include "UtilityFunctions.h"
 
 //Functions associated with initilization of the environment or data
 

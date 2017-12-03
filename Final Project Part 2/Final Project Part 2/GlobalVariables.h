@@ -72,6 +72,8 @@ extern GLfloat ambientLight[];
 extern GLfloat diffuseLight[];
 extern GLfloat emissiveLight[];
 extern GLfloat specularLight[];
+extern GLfloat ambientMaterial[];
+extern GLfloat diffuseMaterial[];
 //Field Light 1
 extern GLfloat diffuseLight1[];
 extern GLfloat lightPosition1[];

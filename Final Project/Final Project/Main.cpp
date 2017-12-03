@@ -20,7 +20,9 @@ worldTop, worldNear, worldFar;
 
 btDiscreteDynamicsWorld* dynamicsWorld;
 btRigidBody* ballRigidBody;
+btRigidBody* targetRigidBody;
 btTransform ballTransformation;
+btTransform targetTransformation;
 float worldScaleToBullet;
 btVector3 goalMesh[8];
 
@@ -69,11 +71,19 @@ double *verticeArrStadium;
 double *normVecArrStadium;
 int *faceArrStadium;
 
+float **verticeArrTarget;
+float **normVecArrTarget;
+float targetScale;
+btVector3 targetLocation;
+int targetRotation = 0;
+
 int currObj = 0; //Object file being read, 0 = ball, 1 = goal
 
 float kickLineStartX, kickLineStartY, kickLineEndX, kickLineEndY;
 float kickStrengthY, kickStrengthX;
 bool ballKicked = false;
+
+float pi = atan(1.0) * 4;
 
 void setup() {
 	//Reads data for models into arrays 
@@ -88,6 +98,8 @@ void setup() {
 	createGoalData();
 	goalBottomCenter = getObjectParameters(numOfV, verticeArrGoal);
 	currObj = 2;
+
+	createTargetData();
 
 	/*fp = fopen("stadium.obj", "r");
 	countLines();

@@ -52,6 +52,19 @@ void updateCameraUpVector() {
 	
 }
 
+//Calculate a new target position within a curved boundary between ball and goal
+void calculateNewTargetPosition() {
+	float randomZ = rand() % 300 + 200;
+	float curveLocation = (randomZ - 200) / 300 * pi;
+	float xyBound = sin(curveLocation);
+	float randomY = rand() % 100 * xyBound + 3;
+	float randomX = rand() % 100 * xyBound - 50;
+
+	targetLocation[0] = randomX;
+	targetLocation[1] = randomY;
+	targetLocation[2] = randomZ;
+}
+
 //Convert screen coordinates to world coordinates
 void screenToWorldCoordinates(int screenX, int screenY, float* worldX, float* worldY) {
 	float screenPercentage = (float)screenX / (float)screenWidth;

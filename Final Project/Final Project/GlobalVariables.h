@@ -17,7 +17,9 @@ worldTop, worldNear, worldFar; //Coordinates of the viewing volume
 
 extern btDiscreteDynamicsWorld* dynamicsWorld;
 extern btRigidBody* ballRigidBody;
+extern btRigidBody* targetRigidBody;
 extern btTransform ballTransformation;
+extern btTransform targetTransformation;
 extern float worldScaleToBullet;
 extern btVector3 goalMesh[8];
 
@@ -71,11 +73,20 @@ extern double *verticeArrStadium;
 extern double *normVecArrStadium;
 extern int *faceArrStadium;
 
+//Data for target object
+extern float **verticeArrTarget;
+extern float **normVecArrTarget;
+extern float targetScale;
+extern btVector3 targetLocation;
+extern int targetRotation;
+
 extern int currObj; //Object file being read, 0 = ball, 1 = goal
 
 extern float kickLineStartX, kickLineStartY, kickLineEndX, kickLineEndY;
 extern float kickStrengthY, kickStrengthX;
 extern bool ballKicked;
+
+extern float pi;
 
 
 

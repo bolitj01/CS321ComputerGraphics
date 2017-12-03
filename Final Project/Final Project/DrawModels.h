@@ -6,10 +6,12 @@
 void countLines();
 void createGoalData();
 void createBallData();
+void createTargetData();
 void createArrayS();
 void drawFileG();
 void drawFileB();
 void drawFileS();
+void drawTarget();
 double* getObjectParameters(int vertexCount, double* vertices);
 
 #endif

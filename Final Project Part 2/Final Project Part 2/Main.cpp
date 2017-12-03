@@ -56,15 +56,17 @@ float worldLeft, worldRight, worldBottom,
 worldTop, worldNear, worldFar;
 //Lighting
 GLfloat ambientLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-GLfloat  diffuseLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+GLfloat diffuseLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 GLfloat emissiveLight[] = { 0.5f, 0.5f, 0.5f, 1.0f };
 GLfloat specularLight[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+GLfloat ambientMaterial[] = { 1.0, 1.0, 1.0, 1.0 };
+GLfloat diffuseMaterial[] = { 1.0, 1.0, 1.0, 1.0 };
 //Field Ligth 1
-GLfloat diffuseLight1[] = { 0.0, 1.0, 0.0, 1.0 };
-GLfloat lightPosition1[] = { 300, 0, 0, 1 };
-GLfloat spotDirection1[] = {0, 0, 0};
-GLfloat cutoff = 10.0;
-GLint exponent = 0;
+GLfloat diffuseLight1[] = { -4.0f, -3.0f, -3.0f, 1.0f };
+GLfloat lightPosition1[] = { 0, 0, 300, 1};
+GLfloat spotDirection1[] = {0, 10, 0};
+GLfloat cutoff = 30.0;
+GLint exponent = 2;
 //Texture Mapping
 int ImgWidth, ImgHeight;
 typedef GLubyte Pixel[3];
@@ -84,7 +86,7 @@ void setup() {
 	createGoalData();
 	currObj = 2;
 
-	fp = fopen("stadium2.obj", "r");
+	/*fp = fopen("stadium2.obj", "r");
 	countLines();
 	createArrayS();
 	currObj = 3;
@@ -92,7 +94,7 @@ void setup() {
 	fp = fopen("lamp2.obj", "r");
 	countLines();
 	createLampData();
-	printf("REACHED");
+	printf("REACHED");*/
 }
 
 void main(int argc, char** argv)

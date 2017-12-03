@@ -8,16 +8,19 @@ void display(void) {
 	glLoadIdentity();
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, diffuseLight);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambientMaterial);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuseMaterial);
 	
-
 	glLoadIdentity();
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuseLight1);
-	glLightfv(GL_LIGHT1, GL_SPECULAR, specularLight);
 	glLightfv(GL_LIGHT1, GL_POSITION, lightPosition1);
 	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, cutoff);
-	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spotDirection1);
+	/*glLoadIdentity();
+	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spotDirection1);*/
 	glLighti(GL_LIGHT1, GL_SPOT_EXPONENT, exponent);
+	/*
+	glLightfv(GL_LIGHT1, GL_SPECULAR, specularLight);
+	*/
 
 
 	glMatrixMode(GL_PROJECTION);
@@ -26,55 +29,54 @@ void display(void) {
 	glFrustum(worldLeft, worldRight, worldBottom, worldTop, worldNear, worldFar);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(-400, 0, 0, 0, 0, 0, 0, 1, 0);
+	gluLookAt(0, 0, -400, 0, 0, 0, 0, 1, 0);
 	glRotatef(xRot, 1.0, 0.0, 0.0);
 	glRotatef(yRot, 0.0, 1.0, 0.0);
 	glRotatef(zRot, 0.0, 0.0, 1.0);
 	glScalef(scaleAmount, scaleAmount, scaleAmount);
 	glTranslatef(xMove, yMove, zMove);
 	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glShadeModel(GL_SMOOTH);
 
 
-	//drawFileG();
+	drawFileG();
 
 	//STADIUM
-	glTranslatef(500, 0, 0);
-	glPushMatrix();
-	glScalef(100, 100, 100);
-	glRotatef(30, 0, 0, 1);
-	drawFileS();
-	glPopMatrix();
+	//glTranslatef(500, 0, 0);
+	//glPushMatrix();
+	//glScalef(100, 100, 100);
+	//glRotatef(30, 0, 0, 1);
+	//drawFileS();
+	//glPopMatrix();
 
 
-	glPushMatrix();
-	glTranslatef(0, 0, 150);
-	glScalef(7, 7, 7);
-	drawFileL();//Right Lamp 1 by half
-	glPopMatrix();
+	//glPushMatrix();
+	//glTranslatef(0, 0, 150);
+	//glScalef(7, 7, 7);
+	//drawFileL();//Right Lamp 1 by half
+	//glPopMatrix();
 
-	glPushMatrix();
-	glTranslatef(0, 0, -150);
-	glScalef(7, 7, 7);
-	drawFileL();//Left Lamp 2 by half
-	glPopMatrix();
+	//glPushMatrix();
+	//glTranslatef(0, 0, -150);
+	//glScalef(7, 7, 7);
+	//drawFileL();//Left Lamp 2 by half
+	//glPopMatrix();
 
 
-	glPushMatrix();
-	glTranslatef(150, 100, 150);
-	glScalef(7, 7, 7);
-	drawFileL();//Right Lamp 3 by goal
-	glPopMatrix();
+	//glPushMatrix();
+	//glTranslatef(150, 100, 150);
+	//glScalef(7, 7, 7);
+	//drawFileL();//Right Lamp 3 by goal
+	//glPopMatrix();
 
-	glPushMatrix();
-	glTranslatef(150, 100, -150);
-	glScalef(7, 7, 7);
-	drawFileL();//Left Lamp 4 by goal
-	glPopMatrix();
+	//glPushMatrix();
+	//glTranslatef(150, 100, -150);
+	//glScalef(7, 7, 7);
+	//drawFileL();//Left Lamp 4 by goal
+	//glPopMatrix();
 
 
 	//BALL
-	//drawFileB();
+	drawFileB();
 
 	//glEnable(GL_CULL_FACE);
 	glFlush();
@@ -115,6 +117,25 @@ void keyPress(unsigned char key, int x, int y)
 		//Move backward along X axis
 		xMove -= 40;
 	}
+	else if (key == '1') {
+		glEnable(GL_LIGHT1);
+	}
+	else if (key == '2') {
+		glDisable(GL_LIGHT1);
+	}
+	else if (key == '3') {
+		for (int i = 0; i < 3; i++) {
+			diffuseLight1[i] += .1;
+		}
+	}
+	else if (key == '4') {
+		for (int i = 0; i < 3; i++) {
+			diffuseLight1[i] -= .1;
+		}
+	}
+	else if (key == '5') {
+		glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spotDirection1);
+	}
 	else if ((key == 'R') || (key == 'r')) {
 		//Move forward along X axis
 		xMove += 40;
@@ -129,7 +150,9 @@ void keyPress(unsigned char key, int x, int y)
 		exponent += 1.0;
 	}
 	else if (key == 'e') {
-		exponent -= 1.0;
+		if (exponent > 0) {
+			exponent -= 1.0;
+		}
 	}
 	else if ((key == 'F') || (key == 'f')) {
 		//Move forward along Z axis
