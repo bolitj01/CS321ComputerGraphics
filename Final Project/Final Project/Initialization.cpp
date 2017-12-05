@@ -15,6 +15,7 @@ void initWindow(int &argc, char **argv) {
 	glutInitWindowSize(screenWidth, screenHeight);
 	glutInitWindowPosition(0, 0);
 	glutCreateWindow("Soccer Simulator");
+	glEnable(GL_DEPTH_TEST);
 }
 
 //Set up the dynamics world based on bullet physics
@@ -46,8 +47,8 @@ void initializePhysicsWorld() {
 
 	dynamicsWorld->addRigidBody(groundRigidBody);
 
-	float x = (goalWidth * .2 + goalBottomCenter[0]);
-	float z = (goalDepth * .72 + goalBottomCenter[2]);
+	float x = (goalWidth * .18 + goalBottomCenter[0]);
+	float z = (goalDepth * .3 + goalBottomCenter[2]);
 	float y = goalHeight / 3;
 	float goalThickness = goalWidth / 50;
 	float backPadding = 100;
@@ -140,7 +141,6 @@ void initializePhysicsWorld() {
 	goalTopRigidBody->setRestitution(.4);
 	goalBackRigidBody->setRestitution(0);
 
-
 	//Add goal parts to dynamics world
 	
 	dynamicsWorld->addRigidBody(goalLeftRigidBody);
@@ -213,9 +213,13 @@ void initializeViewingVolume() {
 	worldNear = 15 * worldScaleToBullet;
 	worldFar = 10000;
 
-	goalZLocation = 1500;
+	goalZLocation = 1000;
+	yGoalRot = -90;
 	goalScale = 4.0 / 10;
+
 	ballStartingHeightOffGround = .5;
+
+	targetRotation = 0;
 }
 
 void initializeCamera() {
@@ -233,4 +237,85 @@ void initializeCamera() {
 
 	xCameraRot = -6;
 	yCameraRot = 0;
+}
+
+void initializeLight() {
+	glShadeModel(GL_SMOOTH);
+
+	light1Enabled = false;
+	light2Enabled = false;
+
+	ambientLight[0] = 1;
+	ambientLight[1] = 1;
+	ambientLight[2] = 1;
+	ambientLight[3] = 1;
+
+	diffuseLight[0] = 1;
+	diffuseLight[1] = 1;
+	diffuseLight[2] = 1;
+	diffuseLight[3] = 1;
+
+	emissiveLight[0] = .5;
+	emissiveLight[1] = .5;
+	emissiveLight[2] = .5;
+	emissiveLight[3] = 1;
+	
+	specularLight[0] = .5;
+	specularLight[1] = .5;
+	specularLight[2] = .5;
+	specularLight[3] = 1;
+
+	ambientMaterial[0] = 1;
+	ambientMaterial[1] = 1;
+	ambientMaterial[2] = 1;
+	ambientMaterial[3] = 1;
+
+	diffuseMaterial[0] = 1;
+	diffuseMaterial[1] = 1;
+	diffuseMaterial[2] = 1;
+	diffuseMaterial[3] = 1; 
+
+	//Field Light 1
+	lamp1DiffuseLight[0] = -1;
+	lamp1DiffuseLight[1] = 0;
+	lamp1DiffuseLight[2] = 0;
+	lamp1DiffuseLight[3] = 1;
+
+	lamp1LightPosition[0] = 0;
+	lamp1LightPosition[1] = 0;
+	lamp1LightPosition[2] = 300;
+	lamp1LightPosition[3] = 1;
+
+	lamp1SpotDirection[0] = 1;
+	lamp1SpotDirection[1] = 0;
+	lamp1SpotDirection[2] = 0;
+
+	lamp1Cutoff = 25.0;
+	lamp1Exponent = 2;
+	
+	//Field Light 2
+	lamp2DiffuseLight[0] = -2;
+	lamp2DiffuseLight[1] = -3;
+	lamp2DiffuseLight[2] = -2;
+	lamp2DiffuseLight[3] = 1;
+
+	lamp2LightPosition[0] = 0;
+	lamp2LightPosition[1] = 0;
+	lamp2LightPosition[2] = 300;
+	lamp2LightPosition[3] = 1;
+
+	lamp2SpotDirection[0] = 1;
+	lamp2SpotDirection[1] = 0;
+	lamp2SpotDirection[2] = 0;
+
+	lamp2Cutoff = 30.0;
+	lamp2Exponent = 2;
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glEnable(GL_LIGHT0);
+
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_COLOR_MATERIAL);
 }

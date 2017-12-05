@@ -5,7 +5,37 @@ void display(void) {
 
 	//Clear screen
 	glClearColor(1.0, 1.0, 1.0, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//Set lighting
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambientMaterial);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuseMaterial);
+
+
+	glLoadIdentity();
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, lamp1DiffuseLight);
+	glLightfv(GL_LIGHT1, GL_POSITION, lamp1LightPosition);
+	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, lamp1Cutoff);
+	/*glLoadIdentity();
+	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spotDirection1);*/
+	glLighti(GL_LIGHT1, GL_SPOT_EXPONENT, lamp1Exponent);
+	/*
+	glLightfv(GL_LIGHT1, GL_SPECULAR, specularLight);
+	*/
+
+	glLightfv(GL_LIGHT2, GL_DIFFUSE, lamp2DiffuseLight);
+	glLightfv(GL_LIGHT2, GL_POSITION, lamp2LightPosition);
+	glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, lamp2Cutoff);
+	/*glLoadIdentity();
+	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spotDirection1);*/
+	glLighti(GL_LIGHT2, GL_SPOT_EXPONENT, lamp1Exponent);
+
+	glEnable(GL_LIGHT1);
+	glEnable(GL_LIGHT2);
 
 	//Set projection
 	glMatrixMode(GL_PROJECTION);
@@ -22,27 +52,6 @@ void display(void) {
 		cameraAtVertex[0], cameraAtVertex[1], cameraAtVertex[2],
 		cameraUpVector[0], cameraUpVector[1], cameraUpVector[2]);
 
-	//Draw kick line and HUD
-	glPushMatrix();
-	glColor3f(0, 0, 255);
-	glLineWidth(5);
-	
-	if (!ballKicked) {
-		glBegin(GL_LINES);
-		glVertex3f(kickLineStartX, kickLineStartY, 0);
-		glVertex3f(kickLineEndX, kickLineEndY, 0);
-		glEnd();
-	}
-
-	//Print kick up angle
-	glRasterPos2f(-4, -5);
-	char kickAngleText[18] = { "Kick up angle:   " };
-	snprintf(kickAngleText + 15, 3, "%d", (int)ballKickUpAngle);
-	for (int i = 0; i < 18; i++) {
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, kickAngleText[i]);
-	}
-	glPopMatrix();
-
 	//Rotate camera
 	glRotatef(yCameraRot - ballKickTurnAngle, 0, 1, 0);
 	glRotatef(xCameraRot, 1, 0, 0);
@@ -50,19 +59,23 @@ void display(void) {
 	//Scale for bullet
 	glScalef(worldScaleToBullet, worldScaleToBullet, worldScaleToBullet);
 
-	//Draw kick angle
-	glPushMatrix();
-	glRotatef(-ballKickUpAngle, 1, 0, 0);
-	glTranslatef(0, ballRadius, 0);
-	glBegin(GL_LINES);
-	glVertex3f(0, 0, 0);
-	glVertex3f(0, 0, 30);
-	glEnd();
-	glPopMatrix();
-
+	if (!ballKicked) {
+		//Draw kick angle
+		glPushMatrix();
+		glRotatef(-ballKickUpAngle, 1, 0, 0);
+		glRotatef(ballKickTurnAngle, 0, 1, 0);
+		glTranslatef(0, ballRadius, 0);
+		glColor3f(0, 0, 1);
+		glBegin(GL_LINES);
+		glVertex3f(0, 0, 0);
+		glVertex3f(0, 0, 30);
+		glEnd();
+		glPopMatrix();
+	}
+	
 	//Draw goal
 	glPushMatrix();
-	glTranslatef(0, 0, goalZLocation);
+	glTranslatef(80, 0, goalZLocation);
 	glRotatef(yGoalRot, 0, 1, 0);
 	glScalef(goalScale, goalScale, goalScale);
 	glTranslatef(-goalBottomCenter[0], -goalBottomCenter[1], -goalBottomCenter[2]);
@@ -104,8 +117,9 @@ void display(void) {
 	glPushMatrix();
 	ballTransformation.getOpenGLMatrix(transformation);
 	glMultMatrixf(transformation);
-	glRotatef(ballRotation, 0, 1, 0);
+	glRotatef(ballRotationY, 0, 1, 0);
 	glRotatef(ballKickTurnAngle, 0, 1, 0);
+	glTranslatef(-ballBottomCenter[0], -ballBottomCenter[1], -ballBottomCenter[2]);
 	drawFileB();
 	glPopMatrix();
 
@@ -118,7 +132,83 @@ void display(void) {
 	drawTarget();
 	glPopMatrix();
 
-	//drawFileS();
+	//Draw four lamps
+	glPushMatrix();
+	glTranslated(375, 0, 200);
+	glScaled(10, 10, 10);
+	drawFileL();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(-375, 0, 200);
+	glScaled(10, 10, 10);
+	drawFileL();
+	glPopMatrix();
+	
+	glPushMatrix();
+	glTranslated(370, 0, 800);
+	glScaled(10, 10, 10);
+	drawFileL();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(-370, 0, 800);
+	glScaled(10, 10, 10);
+	drawFileL();
+	glPopMatrix();
+
+	//Draw stadium
+	if (drawStadium) {
+		glPushMatrix();
+		glTranslated(0, -9, -14);
+		glRotated(90, 0, 1, 0);
+		glScaled(400, 200, 200);
+		glTranslatef(-stadiumBottomCenter[0], -stadiumBottomCenter[1], -stadiumBottomCenter[2]);
+		drawFileS();
+		glPopMatrix();
+	}
+	
+	//Draw kick line and HUD in 2D
+	
+	//Disable depth buffering
+	glDepthMask(GL_FALSE);
+	glDisable(GL_DEPTH_TEST);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(0, screenWidth, 0, screenHeight);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	glColor3f(0, 0, 1);
+	glLineWidth(5);
+
+	if (!ballKicked) {
+		glBegin(GL_LINES);
+		glVertex2f(kickLineStartX, kickLineStartY);
+		glVertex2f(kickLineEndX, kickLineEndY);
+		glEnd();
+
+		//Print kick up angle
+		glRasterPos2f(screenHeight / 10, screenWidth / 20 * 14);
+		char kickUpAngleText[18] = { "Kick up angle:   " };
+		snprintf(kickUpAngleText + 15, 3, "%d", (int)ballKickUpAngle);
+		for (int i = 0; i < 18; i++) {
+			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, kickUpAngleText[i]);
+		}
+
+		//Print kick turn angle
+		glRasterPos2f(screenHeight / 10, screenWidth / 20 * 16);
+		char kickTurnAngleText[22] = { "Kick turn angle:     " };
+		snprintf(kickTurnAngleText + 17, 4, "%d", (int)ballKickTurnAngle);
+		for (int i = 0; i < 22; i++) {
+			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, kickTurnAngleText[i]);
+		}
+	}
+
+	glDepthMask(GL_TRUE);
+	glEnable(GL_DEPTH_TEST);
 
 	glutSwapBuffers();
 	glFlush();
@@ -132,7 +222,7 @@ void idleWorldStep() {
 		btVector3 velocity = ballRigidBody->getLinearVelocity();
 
 		if (velocity[2] > 10) {
-			ballRotation += kickStrengthX * 15;
+			ballRotationY -= kickStrengthX * 30;
 			velocity[0] -= kickStrengthX * 1.3;
 		}
 
@@ -180,6 +270,17 @@ void mouseClick(int button, int state, int x, int y)
 	else if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
 		glutMotionFunc(mouseCameraRotation);
 	}
+	//Scroll up move camera forward
+	else if (button == 3) {
+		if (cameraLocation[2] < -17) {
+			cameraLocation[2] += 1;
+		}
+	
+	}
+	//Scroll down move camera backward
+	else if (button == 4) {
+		cameraLocation[2] -= 1;
+	}
 	else {
 		glutMotionFunc(NULL);
 	}
@@ -221,6 +322,8 @@ void mouseCameraRotation(int x, int y)
 //Controls actions for various key presses
 void keyPress(unsigned char key, int x, int y)
 {
+	int mod = glutGetModifiers();
+
 	//Rotate camera 15 degrees around y axis
 	if (key == 'Y') {
 		yCameraRot += 15;
@@ -235,12 +338,73 @@ void keyPress(unsigned char key, int x, int y)
 	else if (key == 'x') {
 		xCameraRot -= 15;
 	}
+	//Toggle light 1
+	else if (key == '1') {
+		if (!light1Enabled) {
+			glEnable(GL_LIGHT1);
+			light1Enabled = true;
+		}
+		else {
+			glDisable(GL_LIGHT1);
+			light1Enabled = false;
+		}
+	}
+	//Toggle light 2
+	else if (key == '2') {
+		if (!light2Enabled) {
+			glEnable(GL_LIGHT2);
+			light2Enabled = true;
+		}
+		else {
+			glDisable(GL_LIGHT2);
+			light2Enabled = false;
+		}
+	}
+	//Increase/decrease diffuse light
+	else if (key == 'D') {
+		if (diffuseLight[1] < 1) {
+			diffuseLight[0] += .1;
+			diffuseLight[1] += .1;
+			diffuseLight[2] += .1;
+		}
+	}
+	else if (key == 'd') {
+		if (diffuseLight[1] >= .1) {
+			diffuseLight[0] -= .1;
+			diffuseLight[1] -= .1;
+			diffuseLight[2] -= .1;
+		}
+	}
+	//Increase/decrease ambient light
+	else if (key == 'A') {
+		if (ambientLight[0] < 1) {
+			ambientLight[0] += .1;
+			ambientLight[1] += .1;
+			ambientLight[2] += .1;
+		}
+	}
+	else if (key == 'a') {
+		if (ambientLight[0] >= .1) {
+			ambientLight[0] -= .1;
+			ambientLight[1] -= .1;
+			ambientLight[2] -= .1;
+		}
+	}
+	//Toggle stadium drawing
+	else if (key == 's' && mod == GLUT_ACTIVE_ALT) {
+		if (drawStadium) {
+			drawStadium = false;
+		}
+		else {
+			drawStadium = true;
+		}
+	}
+	//Initialize camera to where the ball is facing
 	else if (key == 'I' || key == 'i') {
-		//Resets image
 		initializeCamera();
 	}
+	//Exit program
 	else if (key == 'Q' || key == 'q') {
-		//Exits program
 		exit(0);
 	}
 	//Move the target to a new position

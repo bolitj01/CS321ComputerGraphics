@@ -168,6 +168,7 @@
     <ClCompile Include="Initialization.cpp" />
     <ClCompile Include="CallbackFunctions.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="TextureMapping.cpp" />
     <ClCompile Include="UtilityFunctions.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +176,7 @@
     <ClInclude Include="GlobalVariables.h" />
     <ClInclude Include="Initialization.h" />
     <ClInclude Include="CallbackFunctions.h" />
+    <ClInclude Include="TextureMapping.h" />
     <ClInclude Include="UtilityFunctions.h" />
   </ItemGroup>
   <ItemGroup>
@@ -182,15 +184,23 @@
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </Text>
     <Text Include="soccergoal.obj">
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </Text>
   </ItemGroup>
   <ItemGroup>
+    <None Include="field.ppm" />
     <None Include="freeglut.dll" />
+    <None Include="ground.ppm" />
+    <None Include="lamptexture.ppm" />
+    <None Include="main.ppm" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libraries\bullet-2.82-r2704\bullet-2.82-r2704\build\vs2010\BulletCollision.vcxproj">
@@ -202,6 +212,23 @@
     <ProjectReference Include="..\..\..\Libraries\bullet-2.82-r2704\bullet-2.82-r2704\build\vs2010\LinearMath.vcxproj">
       <Project>{c1851171-5513-284f-a9a5-241f4923a4ce}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="lamp2.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Text>
+    <Text Include="stadium2.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Text>
+    <Text Include="testcolorball.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Text>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -16,6 +16,9 @@
     <Filter Include="Object Files">
       <UniqueIdentifier>{4e76ae7a-01c3-42c3-9d76-e0eb42dde49c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Texture Files">
+      <UniqueIdentifier>{d90a72ee-7a89-463a-874e-a528c15319a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrawModels.cpp">
@@ -31,6 +34,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UtilityFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureMapping.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,15 +56,39 @@
     <ClInclude Include="UtilityFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TextureMapping.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="freeglut.dll" />
+    <None Include="field.ppm">
+      <Filter>Texture Files</Filter>
+    </None>
+    <None Include="ground.ppm">
+      <Filter>Texture Files</Filter>
+    </None>
+    <None Include="lamptexture.ppm">
+      <Filter>Texture Files</Filter>
+    </None>
+    <None Include="main.ppm">
+      <Filter>Texture Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="soccergoal.obj">
       <Filter>Object Files</Filter>
     </Text>
     <Text Include="soccerball.obj">
+      <Filter>Object Files</Filter>
+    </Text>
+    <Text Include="lamp2.obj">
+      <Filter>Object Files</Filter>
+    </Text>
+    <Text Include="stadium2.obj">
+      <Filter>Object Files</Filter>
+    </Text>
+    <Text Include="testcolorball.obj">
       <Filter>Object Files</Filter>
     </Text>
   </ItemGroup>

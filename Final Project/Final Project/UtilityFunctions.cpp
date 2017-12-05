@@ -2,7 +2,7 @@
 
 //Normalizes the vector
 void normalizeVector(float* vector) {
-	double magnitude = sqrt(vector[0] * vector[0] + vector[1] * vector[1] + vector[2] * vector[2]);
+	float magnitude = sqrt(vector[0] * vector[0] + vector[1] * vector[1] + vector[2] * vector[2]);
 
 	for (int i = 0; i < 3; i++) {
 		vector[i] = vector[i] / magnitude;
