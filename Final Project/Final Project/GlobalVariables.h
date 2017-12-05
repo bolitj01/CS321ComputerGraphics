@@ -104,20 +104,28 @@ extern GLfloat emissiveLight[4];
 extern GLfloat specularLight[4];
 extern GLfloat ambientMaterial[4];
 extern GLfloat diffuseMaterial[4];
+extern GLfloat emissiveMaterial[4];
+extern GLfloat specularMaterial[4];
+extern GLfloat shininess;
+//Top positional diffuse light
+extern GLfloat outsideDiffuseLight[4];
+extern GLfloat outsideLightPosition[4];
+extern GLfloat outsideSpotDirection[3];
+extern GLfloat outsideCutoff;
+extern GLint outsideExponent;
 //Field Light 1
 extern GLfloat lamp1DiffuseLight[4];
 extern GLfloat lamp1LightPosition[4];
 extern GLfloat lamp1SpotDirection[3];
-extern GLfloat lamp1Cutoff;
-extern GLint lamp1Exponent;
-extern bool light1Enabled;
+extern bool lamp1Enabled;
 //Field Light 2
 extern GLfloat lamp2DiffuseLight[4];
 extern GLfloat lamp2LightPosition[4];
 extern GLfloat lamp2SpotDirection[3];
-extern GLfloat lamp2Cutoff;
-extern GLint lamp2Exponent;
-extern bool light2Enabled;
+extern bool lamp2Enabled;
+
+extern GLfloat lampExponent;
+extern GLfloat lampCutoff;
 
 //Texture Mapping
 extern int ImgWidth, ImgHeight;
@@ -125,6 +133,8 @@ typedef GLubyte Pixel[3];
 extern Pixel *Image;
 extern char *materialType;
 extern GLuint texName[5];
+
+extern bool displayTextures;
 
 extern int currObj; //Object file being read, 0 = ball, 1 = goal
 

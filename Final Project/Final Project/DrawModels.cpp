@@ -78,7 +78,7 @@ void createGoalData() {
 }
 
 void createBallData() {
-	//initialiseTextures("soccerMap3.ppm");
+	//initializeTextures("soccerMap3.ppm");
 	/*rewind(fp);
 	int countv = 0;
 	int countvn = 0;
@@ -380,9 +380,6 @@ void drawFileG() {
 }
 
 void drawFileB() {
-	glDisable(GL_LIGHTING);
-	//printf("NUM OF F's %d", numOfFB);
-	glBindTexture(GL_TEXTURE_2D, texName[3]);
 	glDisable(GL_TEXTURE_2D);
 	int i = 0;
 	int vertexNum = 0;
@@ -391,7 +388,6 @@ void drawFileB() {
 	glColor3f(1.0, 1.0, 1.0);
 	glBegin(GL_QUADS);
 	for (i = 0; i < 1919; i++) {//Black
-								//printf("NUM OF TIMES: %d\n", i);
 
 		vertexNormNum = faceArrBall[i * 12 + 2];
 		verticeNorm[0] = normVecArrBall[(vertexNormNum * 3) - 3];
@@ -520,11 +516,12 @@ void drawFileB() {
 
 
 	glEnd();
-	glEnable(GL_LIGHTING);
+	glEnable(GL_TEXTURE_2D);
 }
 
 void drawFileL() {
 	glBindTexture(GL_TEXTURE_2D, texName[3]);
+	glEnable(GL_TEXTURE_2D);
 	int i = 0;
 	int vertexNum = 0;
 	int vertexNormNum = 0;
@@ -593,8 +590,7 @@ void drawFileL() {
 		glVertex3f(vertice[0], vertice[1], vertice[2]);
 	}
 	glEnd();
-
-
+	glDisable(GL_TEXTURE_2D);
 }
 
 void drawFileS() {
@@ -603,6 +599,13 @@ void drawFileS() {
 	int vertexNum = 0;
 	int vertexNormNum = 0;
 	int vertexTexNum = 0;
+
+	if (displayTextures) {
+		glEnable(GL_TEXTURE_2D);
+	}
+	else {
+		glDisable(GL_TEXTURE_2D);
+	}
 
 	//THIS VERSION DOESN'T CHANGE TEXTURES
 	/*glBindTexture(GL_TEXTURE_2D, texName[1]);
@@ -1217,14 +1220,14 @@ void drawTarget() {
 	glNormal3fv(normVecArrTarget[2]);
 	glVertex3fv(verticeArrTarget[1]);
 	glNormal3fv(normVecArrTarget[2]);
-	glVertex3fv(verticeArrTarget[5]);
+	glVertex3fv(verticeArrTarget[7]);
 
 	glNormal3fv(normVecArrTarget[2]);
-	glVertex3fv(verticeArrTarget[0]);
+	glVertex3fv(verticeArrTarget[1]);
 	glNormal3fv(normVecArrTarget[2]);
 	glVertex3fv(verticeArrTarget[7]);
 	glNormal3fv(normVecArrTarget[2]);
-	glVertex3fv(verticeArrTarget[5]);
+	glVertex3fv(verticeArrTarget[6]);
 
 	//Cube front
 	glNormal3fv(normVecArrTarget[3]);

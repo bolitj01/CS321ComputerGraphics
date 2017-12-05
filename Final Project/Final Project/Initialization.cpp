@@ -4,7 +4,7 @@
 
 void initWindow(int &argc, char **argv) {
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE);
+	glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE|GLUT_DEPTH);
 	//Get full screen size
 	RECT desktop;
 	const HWND hDesktop = GetDesktopWindow();
@@ -49,7 +49,7 @@ void initializePhysicsWorld() {
 
 	float x = (goalWidth * .18 + goalBottomCenter[0]);
 	float z = (goalDepth * .3 + goalBottomCenter[2]);
-	float y = goalHeight / 3;
+	float y = goalHeight * .3;
 	float goalThickness = goalWidth / 50;
 	float backPadding = 100;
 
@@ -113,7 +113,7 @@ void initializePhysicsWorld() {
 	goalBackHull->setMargin(collisionMargin);
 
 	//Create goal left side hull
-	btDefaultMotionState* goalLeftMotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, goalZLocation)));
+	btDefaultMotionState* goalLeftMotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, goalZLocation + 20)));
 	btRigidBody::btRigidBodyConstructionInfo
 		goalLeftRigidBodyCI(0, goalLeftMotionState, goalLeftHull, btVector3(0, 0, 0));
 	btRigidBody* goalLeftRigidBody = new btRigidBody(goalLeftRigidBodyCI);
@@ -125,7 +125,7 @@ void initializePhysicsWorld() {
 	btRigidBody* goalTopRigidBody = new btRigidBody(goalTopRigidBodyCI);
 
 	//Create goal right side hull
-	btDefaultMotionState* goalRightMotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, goalZLocation)));
+	btDefaultMotionState* goalRightMotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, goalZLocation + 20)));
 	btRigidBody::btRigidBodyConstructionInfo
 		goalRightRigidBodyCI(0, goalRightMotionState, goalRightHull, btVector3(0, 0, 0));
 	btRigidBody* goalRightRigidBody = new btRigidBody(goalRightRigidBodyCI);
@@ -240,29 +240,25 @@ void initializeCamera() {
 }
 
 void initializeLight() {
-	glShadeModel(GL_SMOOTH);
 
-	light1Enabled = false;
-	light2Enabled = false;
-
-	ambientLight[0] = 1;
-	ambientLight[1] = 1;
-	ambientLight[2] = 1;
+	ambientLight[0] = .2;
+	ambientLight[1] = .2;
+	ambientLight[2] = .2;
 	ambientLight[3] = 1;
 
-	diffuseLight[0] = 1;
-	diffuseLight[1] = 1;
-	diffuseLight[2] = 1;
+	diffuseLight[0] = .2;
+	diffuseLight[1] = .2;
+	diffuseLight[2] = .2;
 	diffuseLight[3] = 1;
 
-	emissiveLight[0] = .5;
-	emissiveLight[1] = .5;
-	emissiveLight[2] = .5;
+	emissiveLight[0] = .2;
+	emissiveLight[1] = .2;
+	emissiveLight[2] = .2;
 	emissiveLight[3] = 1;
 	
-	specularLight[0] = .5;
-	specularLight[1] = .5;
-	specularLight[2] = .5;
+	specularLight[0] = .2;
+	specularLight[1] = .2;
+	specularLight[2] = .2;
 	specularLight[3] = 1;
 
 	ambientMaterial[0] = 1;
@@ -275,47 +271,77 @@ void initializeLight() {
 	diffuseMaterial[2] = 1;
 	diffuseMaterial[3] = 1; 
 
-	//Field Light 1
+	emissiveMaterial[0] = .2;
+	emissiveMaterial[1] = .2;
+	emissiveMaterial[2] = .2;
+
+	specularMaterial[0] = .1;
+	specularMaterial[1] = .1;
+	specularMaterial[2] = .1;
+	specularMaterial[3] = 1;
+
+	shininess = 2;
+
+	//Outside directional diffuse light
+	outsideDiffuseLight[0] = .4;
+	outsideDiffuseLight[1] = .4;
+	outsideDiffuseLight[2] = .4;
+	outsideDiffuseLight[3] = 0;
+
+	outsideLightPosition[0] = 0;
+	outsideLightPosition[1] = 3000;
+	outsideLightPosition[2] = -200;
+	outsideLightPosition[3] = 1;
+
+	outsideSpotDirection[0] = 0;
+	outsideSpotDirection[1] = 0;
+	outsideSpotDirection[2] = 0;
+
+	outsideCutoff = 90.0;
+	outsideExponent = 2;
+	
+	//Stadium Light2
 	lamp1DiffuseLight[0] = -1;
 	lamp1DiffuseLight[1] = 0;
 	lamp1DiffuseLight[2] = 0;
 	lamp1DiffuseLight[3] = 1;
 
-	lamp1LightPosition[0] = 0;
-	lamp1LightPosition[1] = 0;
-	lamp1LightPosition[2] = 300;
+	lamp1LightPosition[0] = 375;
+	lamp1LightPosition[1] = 200;
+	lamp1LightPosition[2] = 200;
 	lamp1LightPosition[3] = 1;
 
-	lamp1SpotDirection[0] = 1;
+	lamp1SpotDirection[0] = 0;
 	lamp1SpotDirection[1] = 0;
 	lamp1SpotDirection[2] = 0;
 
-	lamp1Cutoff = 25.0;
-	lamp1Exponent = 2;
-	
+	lamp1Enabled = false;
+
 	//Field Light 2
 	lamp2DiffuseLight[0] = -2;
 	lamp2DiffuseLight[1] = -3;
 	lamp2DiffuseLight[2] = -2;
 	lamp2DiffuseLight[3] = 1;
 
-	lamp2LightPosition[0] = 0;
-	lamp2LightPosition[1] = 0;
-	lamp2LightPosition[2] = 300;
+	lamp2LightPosition[0] = -375;
+	lamp2LightPosition[1] = 200;
+	lamp2LightPosition[2] = 200;
 	lamp2LightPosition[3] = 1;
 
-	lamp2SpotDirection[0] = 1;
+	lamp2SpotDirection[0] = 0;
 	lamp2SpotDirection[1] = 0;
 	lamp2SpotDirection[2] = 0;
 
-	lamp2Cutoff = 30.0;
-	lamp2Exponent = 2;
+	lampCutoff = 40.0;
+	lampExponent = 5;
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glEnable(GL_LIGHT0);
+	lamp2Enabled = false;
 
-	glEnable(GL_DEPTH_TEST);
+	glShadeModel(GL_SMOOTH);
 	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT1);
+	glEnable(GL_LIGHT4);
+	glEnable(GL_LIGHT5);
 	glEnable(GL_COLOR_MATERIAL);
 }

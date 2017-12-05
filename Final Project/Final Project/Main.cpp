@@ -109,20 +109,28 @@ GLfloat emissiveLight[4];
 GLfloat specularLight[4];
 GLfloat ambientMaterial[4];
 GLfloat diffuseMaterial[4];
+GLfloat emissiveMaterial[4];
+GLfloat specularMaterial[4];
+GLfloat shininess;
+//Outside positonal diffuse light
+GLfloat outsideDiffuseLight[4];
+GLfloat outsideLightPosition[4];
+GLfloat outsideSpotDirection[3];
+GLfloat outsideCutoff;
+GLint outsideExponent;
 //Field Light 1
 GLfloat lamp1DiffuseLight[4];
 GLfloat lamp1LightPosition[4];
 GLfloat lamp1SpotDirection[3];
-GLfloat lamp1Cutoff;
-GLint lamp1Exponent;
-bool light1Enabled;
+bool lamp1Enabled;
 //Field Light 2
 GLfloat lamp2DiffuseLight[4];
 GLfloat lamp2LightPosition[4];
 GLfloat lamp2SpotDirection[3];
-GLfloat lamp2Cutoff;
-GLint lamp2Exponent;
-bool light2Enabled;
+bool lamp2Enabled;
+
+GLfloat lampExponent;
+GLfloat lampCutoff;
 
 //Texture Mapping
 int ImgWidth, ImgHeight;
@@ -130,6 +138,8 @@ typedef GLubyte Pixel[3];
 Pixel *Image;
 char *materialType;
 GLuint texName[5];
+
+bool displayTextures = true;
 
 int currObj = 0; //Object file being read, 0 = ball, 1 = goal, 2 = stadium
 
@@ -156,18 +166,18 @@ void setup() {
 	createGoalData();
 	goalBottomCenter = getObjectParameters(numOfV, verticeArrGoal);
 
-	printf("Reading stadium\n");
+	/*printf("Reading stadium\n");
 	currObj = 2;
 	fp = fopen("stadium2.obj", "r");
 	countLines();
 	createStadiumData();
 	stadiumBottomCenter = getObjectParameters(numOfV, verticeArrStadium);
-	currObj = 3;
 
+	currObj = 3;
 	printf("Reading lamp\n");
 	fp = fopen("lamp2.obj", "r");
 	countLines();
-	createLampData();
+	createLampData();*/
 
 	createTargetData();
 
@@ -183,14 +193,14 @@ void setup() {
 	initializeCamera();
 	initializePhysicsWorld();
 	initializeLight();
-	bindTextures();
+	//bindTextures();
 }
 
 void main(int argc, char** argv)
 {
-	setup();
-
 	initWindow(argc, argv);
+
+	setup();
 
 	glutDisplayFunc(display);
 	glutIdleFunc(idleWorldStep);
