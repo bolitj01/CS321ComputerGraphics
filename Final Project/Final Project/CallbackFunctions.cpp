@@ -4,7 +4,7 @@
 void display(void) {
 
 	//Clear screen
-	glClearColor(0.4, 0.4, 0.5, 1.0);
+	glClearColor(0.5, 0.5, 0.7, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//Set lighting
@@ -129,11 +129,11 @@ void display(void) {
 	drawFileG();
 	glPopMatrix();
 
-	//Draw goal mesh
+	/*//Draw goal mesh
 	glPushMatrix();
 	glColor3f(255, 0, 0);
 	glTranslatef(0, 0, goalZLocation);
-	//glTranslatef(-goalBottomCenter[0], -goalBottomCenter[1], -goalBottomCenter[2]);
+	glTranslatef(-goalBottomCenter[0], -goalBottomCenter[1], -goalBottomCenter[2]);
 	glBegin(GL_LINE_LOOP);
 	for (int i = 0; i < 4; i++) {
 		glVertex3f(goalMesh[i][0], goalMesh[i][1], goalMesh[i][2]);
@@ -155,43 +155,43 @@ void display(void) {
 	glVertex3f(goalMesh[5][0], goalMesh[5][1], goalMesh[5][2]);
 	glVertex3f(goalMesh[6][0], goalMesh[6][1], goalMesh[6][2]);
 	glEnd();
+	glPopMatrix();*/
+	
+	//Draw stadium
+	if (drawStadium) {
+		glPushMatrix();
+		glTranslated(0, -9, -14);
+		glRotated(90, 0, 1, 0);
+		glScaled(400, 200, 200);
+		glTranslatef(-stadiumBottomCenter[0], -stadiumBottomCenter[1], -stadiumBottomCenter[2]);
+		drawFileS();
+		glPopMatrix();
+	}
+
+	//Draw four lamps
+	glPushMatrix();
+	glTranslated(375, 0, 200);
+	glScaled(10, 10, 10);
+	drawFileL();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(-375, 0, 200);
+	glScaled(10, 10, 10);
+	drawFileL();
 	glPopMatrix();
 	
-	////Draw stadium
-	//if (drawStadium) {
-	//	glPushMatrix();
-	//	glTranslated(0, -9, -14);
-	//	glRotated(90, 0, 1, 0);
-	//	glScaled(400, 200, 200);
-	//	glTranslatef(-stadiumBottomCenter[0], -stadiumBottomCenter[1], -stadiumBottomCenter[2]);
-	//	drawFileS();
-	//	glPopMatrix();
-	//}
+	glPushMatrix();
+	glTranslated(370, 0, 800);
+	glScaled(10, 10, 10);
+	drawFileL();
+	glPopMatrix();
 
-	////Draw four lamps
-	//glPushMatrix();
-	//glTranslated(375, 0, 200);
-	//glScaled(10, 10, 10);
-	//drawFileL();
-	//glPopMatrix();
-
-	//glPushMatrix();
-	//glTranslated(-375, 0, 200);
-	//glScaled(10, 10, 10);
-	//drawFileL();
-	//glPopMatrix();
-	//
-	//glPushMatrix();
-	//glTranslated(370, 0, 800);
-	//glScaled(10, 10, 10);
-	//drawFileL();
-	//glPopMatrix();
-
-	//glPushMatrix();
-	//glTranslated(-370, 0, 800);
-	//glScaled(10, 10, 10);
-	//drawFileL();
-	//glPopMatrix();
+	glPushMatrix();
+	glTranslated(-370, 0, 800);
+	glScaled(10, 10, 10);
+	drawFileL();
+	glPopMatrix();
 
 	emissiveMaterial[0] = .1;
 	emissiveMaterial[1] = .1;

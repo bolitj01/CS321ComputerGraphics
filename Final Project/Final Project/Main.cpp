@@ -166,7 +166,7 @@ void setup() {
 	createGoalData();
 	goalBottomCenter = getObjectParameters(numOfV, verticeArrGoal);
 
-	/*printf("Reading stadium\n");
+	printf("Reading stadium\n");
 	currObj = 2;
 	fp = fopen("stadium2.obj", "r");
 	countLines();
@@ -177,7 +177,7 @@ void setup() {
 	printf("Reading lamp\n");
 	fp = fopen("lamp2.obj", "r");
 	countLines();
-	createLampData();*/
+	createLampData();
 
 	createTargetData();
 
@@ -193,7 +193,7 @@ void setup() {
 	initializeCamera();
 	initializePhysicsWorld();
 	initializeLight();
-	//bindTextures();
+	bindTextures();
 }
 
 void main(int argc, char** argv)
